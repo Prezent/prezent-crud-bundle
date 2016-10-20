@@ -25,4 +25,4 @@ class ProductController extends CrudController
 }
 ```
 
-The documentation can be found in [Resources/doc](Resources/doc/index.md)
+The documentation can be found in [Resources/doc](src/Resources/doc/index.md)
