@@ -46,7 +46,7 @@ Options to pass to the grid builder.
 
 The name of the controller. A default name is automatically constructed from your controller
 class. A `ProductController` would have `"product"` as a name. A `ProductTypeController` would
-have `"product_type"` as a name. Use this setting to override the name.
+have `"producttype"` as a name. Use this setting to override the name.
 
 
 ### `setRoutePrefix(string $routePrefix)`
