@@ -47,8 +47,6 @@ Now, if you want to render a custom `view` action, you can use `getTemplate` lik
 ```php
 public function viewAction(Request $request)
 {
-    // ...
-
     return $this->render($this->getTemplate($request, 'view'), [
         // data
     ]);
@@ -99,7 +97,7 @@ Filtering the grid
 To filter the items shown in the grid, override the `configureListCriteria` method. It is passed the
 QueryBuilder as the only argument. Here you can add extra clauses. Example:
 
-```
+```php
 protected function configureListCriteria(QueryBuilder $qb)
 {
     $qb->andWhere($qb->getRootAlias() . '.deleted IS NULL');
