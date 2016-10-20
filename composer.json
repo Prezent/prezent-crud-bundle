@@ -1,0 +1,34 @@
+{
+    "name": "prezent/crud-bundle",
+    "type": "library",
+    "description": "Easy CRUD for Symfony",
+    "keywords": ["crud", "admin", "grid", "datagrid"],
+    "homepage": "http://www.prezent.nl",
+    "require": {
+        "php": "^5.5|^7.0",
+        "doctrine/doctrine-bundle": "^1.6",
+        "prezent/grid-bundle": "^0.4.0",
+        "sensio/framework-extra-bundle": "^3.0",
+        "symfony/framework-bundle": "^2.6|^3.0",
+        "white-october/pagerfanta-bundle": "^1.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sander Marechal",
+            "email": "sander@prezent.nl"
+        },
+        {
+            "name": "Prezent Internet B.V.",
+            "email": "github@prezent.nl"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "Prezent\\CrudBundle\\": "" }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}

@@ -1,0 +1,31 @@
+{% extends 'PrezentCrudBundle::layout.html.twig' %}
+
+{% block crud_content %}
+    {% trans_default_domain config.translationDomain %}
+
+    <h2>{{ ('crud.' ~ config.name ~ '.index.title')|trans }}</h2>
+    {% include 'PrezentCrudBundle:Common:flashes.html.twig' %}
+
+    {% if config.gridTheme %}
+        {% grid_theme grid config.gridTheme %}
+    {% endif %}
+
+    {{ grid(grid, pager, {'attr': {'class': 'crud-grid'}}) }}
+
+    {{ pagerfanta(pager, 'foundation') }}
+
+    {% block admin_actions %}
+        {% trans_default_domain config.translationDomain %}
+        <a class="button" href="{{ path(config.routePrefix ~ 'add') }}">{{ ('crud.' ~ config.name ~ '.index.action.add')|trans }}</a>
+    {% endblock %}
+
+    <div id="crud-delete-modal" class="reveal-modal" data-reveal>
+        <a class="close-reveal-modal"><i class="fa fa-times"></i></a>
+        <h3>{{ ('modal.' ~ config.name ~ '.delete.title')|trans }}</h3>
+        <p>{{ ('modal.' ~ config.name ~ '.delete.text')|trans }}</p>
+        <ul class="button-group">
+            <li><a href="" class="button secondary cancel"><i class="fa fa-times"></i> {{ ('modal.' ~ config.name ~ '.delete.action.cancel')|trans }}</a></li>
+            <li><a href="" class="button primary delete"><i class="fa fa-check"></i> {{ ('modal.' ~ config.name ~ '.delete.action.delete')|trans }}</a></li>
+        </ul>
+    </div>
+{% endblock %}
