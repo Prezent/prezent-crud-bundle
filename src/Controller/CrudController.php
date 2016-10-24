@@ -148,7 +148,7 @@ abstract class CrudController extends Controller
         $om->remove($object);
 
         try {
-            $em->flush();
+            $om->flush();
             $this->addFlash('success', sprintf('flash.%s.delete.success', $configuration->getName()));
         } catch (\Exception $e) {
             $this->addFlash('error', sprintf('flash.%s.delete.error', $configuration->getName()));
