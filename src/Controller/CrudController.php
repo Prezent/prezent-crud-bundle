@@ -25,24 +25,16 @@ abstract class CrudController extends Controller
     private $configuration;
 
     /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->configuration = new Configuration($this);
-        $this->configure($this->configuration);
-        $this->configuration->validate();
-    }
-
-    /**
      * List objects
      *
      * @Route("/")
      */
     public function indexAction(Request $request)
     {
-        $sortField = $request->get('sort_by', $this->configuration->getDefaultSortField());
-        $sortOrder = $request->get('sort_order', $this->configuration->getDefaultSortOrder());
+        $configuration = $this->getConfiguration();
+
+        $sortField = $request->get('sort_by', $configuration->getDefaultSortField());
+        $sortOrder = $request->get('sort_order', $configuration->getDefaultSortOrder());
 
         // Ensure that the correct field is active
         $request->query->set('sort_by', $sortField);
@@ -57,12 +49,12 @@ abstract class CrudController extends Controller
         $pager->setCurrentPage($request->get('page', 1));
 
         $grid = $this->get('grid_factory')->createGrid(
-            $this->configuration->getGridType(),
-            $this->configuration->getGridOptions()
+            $configuration->getGridType(),
+            $configuration->getGridOptions()
         );
 
         return $this->render($this->getTemplate($request, 'index'), [
-            'config' => $this->configuration,
+            'config' => $configuration,
             'grid'   => $grid->createView(),
             'pager'  => $pager,
         ]);
@@ -75,12 +67,13 @@ abstract class CrudController extends Controller
      */
     public function addAction(Request $request)
     {
+        $configuration = $this->getConfiguration();
         $om = $this->getObjectManager();
 
         $form = $this->createForm(
-            $this->configuration->getFormType(),
+            $configuration->getFormType(),
             $this->newInstance($request),
-            $this->configuration->getFormOptions()
+            $configuration->getFormOptions()
         );
 
         $form->handleRequest($request);
@@ -90,16 +83,16 @@ abstract class CrudController extends Controller
 
             try {
                 $om->flush();
-                $this->addFlash('success', sprintf('flash.%s.add.success', $this->configuration->getName()));
+                $this->addFlash('success', sprintf('flash.%s.add.success', $configuration->getName()));
             } catch (\Exception $e) {
-                $this->addFlash('error', sprintf('flash.%s.add.error', $this->configuration->getName()));
+                $this->addFlash('error', sprintf('flash.%s.add.error', $configuration->getName()));
             }
 
-            return $this->redirectToRoute($this->configuration->getRoutePrefix() . 'index');
+            return $this->redirectToRoute($configuration->getRoutePrefix() . 'index');
         }
 
         return $this->render($this->getTemplate($request, 'add'), [
-            'config' => $this->configuration,
+            'config' => $configuration,
             'form'   => $form->createView(),
         ]);
     }
@@ -111,12 +104,13 @@ abstract class CrudController extends Controller
      */
     public function editAction(Request $request, $id)
     {
+        $configuration = $this->getConfiguration();
         $om = $this->getObjectManager();
 
         $form = $this->createForm(
-            $this->configuration->getFormType(),
+            $configuration->getFormType(),
             $this->findObject($id),
-            $this->configuration->getFormOptions()
+            $configuration->getFormOptions()
         );
 
         $form->handleRequest($request);
@@ -126,16 +120,16 @@ abstract class CrudController extends Controller
 
             try {
                 $om->flush();
-                $this->addFlash('success', sprintf('flash.%s.edit.success', $this->configuration->getName()));
+                $this->addFlash('success', sprintf('flash.%s.edit.success', $configuration->getName()));
             } catch (\Exception $e) {
-                $this->addFlash('error', sprintf('flash.%s.edit.error', $this->configuration->getName()));
+                $this->addFlash('error', sprintf('flash.%s.edit.error', $configuration->getName()));
             }
 
-            return $this->redirectToRoute($this->configuration->getRoutePrefix() . 'index');
+            return $this->redirectToRoute($configuration->getRoutePrefix() . 'index');
         }
 
         return $this->render($this->getTemplate($request, 'edit'), [
-            'config' => $this->configuration,
+            'config' => $configuration,
             'form'   => $form->createView(),
         ]);
     }
@@ -147,6 +141,7 @@ abstract class CrudController extends Controller
      */
     public function deleteAction($id)
     {
+        $configuration = $this->getConfiguration();
         $object = $this->findObject($id);
 
         $om = $this->getObjectManager();
@@ -154,12 +149,12 @@ abstract class CrudController extends Controller
 
         try {
             $em->flush();
-            $this->addFlash('success', sprintf('flash.%s.delete.success', $this->configuration->getName()));
+            $this->addFlash('success', sprintf('flash.%s.delete.success', $configuration->getName()));
         } catch (\Exception $e) {
-            $this->addFlash('error', sprintf('flash.%s.delete.error', $this->configuration->getName()));
+            $this->addFlash('error', sprintf('flash.%s.delete.error', $configuration->getName()));
         }
 
-        return $this->redirectToRoute($this->configuration->getRoutePrefix() . 'index');
+        return $this->redirectToRoute($configuration->getRoutePrefix() . 'index');
     }
 
     /**
@@ -179,6 +174,12 @@ abstract class CrudController extends Controller
      */
     protected function getConfiguration()
     {
+        if (!$this->configuration) {
+            $this->configuration = new Configuration($this);
+            $this->configure($this->configuration);
+            $this->configuration->validate();
+        }
+
         return $this->configuration;
     }
 
@@ -204,7 +205,7 @@ abstract class CrudController extends Controller
     {
         if (!($object = $this->getRepository()->find($id))) {
             throw $this->createNotFoundException(
-                sprintf('Object %s(%s) not found', $this->configuration->getEntityClass(), $id)
+                sprintf('Object %s(%s) not found', $this->getConfiguration()->getEntityClass(), $id)
             );
         }
 
@@ -247,7 +248,7 @@ abstract class CrudController extends Controller
      */
     protected function getObjectManager()
     {
-        return $this->getDoctrine()->getManagerForClass($this->configuration->getEntityClass());
+        return $this->getDoctrine()->getManagerForClass($this->getConfiguration()->getEntityClass());
     }
 
     /**
@@ -257,6 +258,6 @@ abstract class CrudController extends Controller
      */
     protected function getRepository()
     {
-        return $this->getObjectManager()->getRepository($this->configuration->getEntityClass());
+        return $this->getObjectManager()->getRepository($this->getConfiguration()->getEntityClass());
     }
 }
