@@ -57,6 +57,11 @@ determined from the controller class, see also the
 A controller class of `Vendor\AppBundle\ProductController` would have a prefix of `"vendor_app_product_"`.
 
 
+### `setRouteParameters(array $routeParameters)`
+
+Pass extra parameters to the generated routes. By default no extra parameters are required.
+
+
 ### `setDefaultSortField(string $field)`
 
 The field on which your grid will be sorted. Defaults to `"id"`.

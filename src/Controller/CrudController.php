@@ -88,7 +88,10 @@ abstract class CrudController extends Controller
                 $this->addFlash('error', sprintf('flash.%s.add.error', $configuration->getName()));
             }
 
-            return $this->redirectToRoute($configuration->getRoutePrefix() . 'index');
+            return $this->redirectToRoute(
+                $configuration->getRoutePrefix() . 'index',
+                $configuration->getRouteParameters()
+            );
         }
 
         return $this->render($this->getTemplate($request, 'add'), [
@@ -125,7 +128,10 @@ abstract class CrudController extends Controller
                 $this->addFlash('error', sprintf('flash.%s.edit.error', $configuration->getName()));
             }
 
-            return $this->redirectToRoute($configuration->getRoutePrefix() . 'index');
+            return $this->redirectToRoute(
+                $configuration->getRoutePrefix() . 'index',
+                $configuration->getRouteParameters()
+            );
         }
 
         return $this->render($this->getTemplate($request, 'edit'), [
@@ -154,7 +160,10 @@ abstract class CrudController extends Controller
             $this->addFlash('error', sprintf('flash.%s.delete.error', $configuration->getName()));
         }
 
-        return $this->redirectToRoute($configuration->getRoutePrefix() . 'index');
+        return $this->redirectToRoute(
+            $configuration->getRoutePrefix() . 'index',
+            $configuration->getRouteParameters()
+        );
     }
 
     /**

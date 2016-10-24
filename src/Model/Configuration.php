@@ -22,6 +22,11 @@ class Configuration
     private $routePrefix;
 
     /**
+     * @var array
+     */
+    private $routeParameters = [];
+
+    /**
      * @var string
      */
     private $entityClass;
@@ -123,6 +128,28 @@ class Configuration
     public function setRoutePrefix($routePrefix)
     {
         $this->routePrefix = $routePrefix;
+        return $this;
+    }
+
+    /**
+     * Get routeParameters
+     *
+     * @return array
+     */
+    public function getRouteParameters()
+    {
+        return $this->routeParameters;
+    }
+    
+    /**
+     * Set routeParameters
+     *
+     * @param array $routeParameters
+     * @return self
+     */
+    public function setRouteParameters(array $routeParameters)
+    {
+        $this->routeParameters = $routeParameters;
         return $this;
     }
 
