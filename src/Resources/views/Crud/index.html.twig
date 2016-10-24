@@ -6,6 +6,8 @@
     <h2>{{ ('crud.' ~ config.name ~ '.index.title')|trans }}</h2>
     {% include 'PrezentCrudBundle:Common:flashes.html.twig' %}
 
+    {% block crud_text %}{% endblock %}
+
     {% if config.gridTheme %}
         {% grid_theme grid config.gridTheme %}
     {% endif %}
@@ -14,7 +16,7 @@
 
     {{ pagerfanta(pager, 'foundation') }}
 
-    {% block admin_actions %}
+    {% block crud_actions %}
         {% trans_default_domain config.translationDomain %}
         <a class="button" href="{{ path(config.routePrefix ~ 'add') }}">{{ ('crud.' ~ config.name ~ '.index.action.add')|trans }}</a>
     {% endblock %}

@@ -4,6 +4,9 @@
     {% trans_default_domain config.translationDomain %}
 
     <h2>{{ ('crud.' ~ config.name ~ '.edit.title')|trans }}</h2>
+    {% include 'PrezentCrudBundle:Common:flashes.html.twig' %}
+
+    {% block crud_text %}{% endblock %}
 
     {% if config.formTheme %}
         {% form_theme form config.formTheme %}

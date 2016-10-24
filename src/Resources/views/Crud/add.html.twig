@@ -6,6 +6,8 @@
     <h2>{{ ('crud.' ~ config.name ~ '.add.title')|trans }}</h2>
     {% include 'PrezentCrudBundle:Common:flashes.html.twig' %}
 
+    {% block crud_text %}{% endblock %}
+
     {% if config.formTheme %}
         {% form_theme form config.formTheme %}
     {% endif %}
