@@ -247,9 +247,9 @@ abstract class CrudController extends Controller
      *
      * @return ObjectManager
      */
-    protected function getObjectManager()
+    protected function getObjectManager($class = null)
     {
-        return $this->getDoctrine()->getManagerForClass($this->getConfiguration()->getEntityClass());
+        return $this->getDoctrine()->getManagerForClass($class ?: $this->getConfiguration()->getEntityClass());
     }
 
     /**
@@ -257,8 +257,8 @@ abstract class CrudController extends Controller
      *
      * @return ObjectRepository
      */
-    protected function getRepository()
+    protected function getRepository($class = null)
     {
-        return $this->getObjectManager()->getRepository($this->getConfiguration()->getEntityClass());
+        return $this->getObjectManager($class)->getRepository($class ?: $this->getConfiguration()->getEntityClass());
     }
 }

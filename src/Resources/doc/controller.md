@@ -60,14 +60,14 @@ It would try and find the following template, rendering the first one that exist
 3. `PrezentCrudBundle:Crud:view.html.twig`
 
 
-### `getObjectManager()`
+### `getObjectManager([$class])`
 
-get the Doctrine object manager responsible for the configured class.
+get the Doctrine object manager responsible for a class. Defaults to the configured class.
 
 
-### `getRepository()`
+### `getRepository([$class])`
 
-Get the Doctrine object repository for the configured class.
+Get the Doctrine object repository for a class. Defaults to the configured class.
 
 
 Creating new objects
