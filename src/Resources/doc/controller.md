@@ -95,10 +95,10 @@ Filtering the grid
 ------------------
 
 To filter the items shown in the grid, override the `configureListCriteria` method. It is passed the
-QueryBuilder as the only argument. Here you can add extra clauses. Example:
+request and QueryBuilder as arguments. Here you can add extra clauses. Example:
 
 ```php
-protected function configureListCriteria(QueryBuilder $qb)
+protected function configureListCriteria(Request $request, QueryBuilder $qb)
 {
     $qb->andWhere($qb->getRootAlias() . '.deleted IS NULL');
 }

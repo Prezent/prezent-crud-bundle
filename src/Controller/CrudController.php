@@ -43,7 +43,7 @@ abstract class CrudController extends Controller
         $queryBuilder = $this->getRepository()->createQueryBuilder('o');
         $queryBuilder->addOrderBy('o.' . $sortField, $sortOrder);
 
-        $this->configureListCriteria($queryBuilder);
+        $this->configureListCriteria($request, $queryBuilder);
 
         $pager = new Pagerfanta(new DoctrineORMAdapter($queryBuilder));
         $pager->setCurrentPage($request->get('page', 1));
@@ -215,10 +215,11 @@ abstract class CrudController extends Controller
     /**
      * Configure list criteria
      *
+     * @param Request $request
      * @param QueryBuilder $queryBuilder
      * @return void
      */
-    protected function configureListCriteria(QueryBuilder $queryBuilder)
+    protected function configureListCriteria(Request $request, QueryBuilder $queryBuilder)
     {
     }
 
