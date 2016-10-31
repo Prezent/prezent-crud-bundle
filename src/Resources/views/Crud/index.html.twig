@@ -1,33 +1,25 @@
 {% extends 'PrezentCrudBundle::layout.html.twig' %}
 
 {% block crud_content %}
-    {% trans_default_domain config.translationDomain %}
-
-    <h2>{{ ('crud.' ~ config.name ~ '.index.title')|trans }}</h2>
-    {% include 'PrezentCrudBundle:Common:flashes.html.twig' %}
-
-    {% block crud_text %}{% endblock %}
-
-    {% if config.gridTheme %}
-        {% grid_theme grid config.gridTheme %}
-    {% endif %}
-
-    {{ grid(grid, pager, {'attr': {'class': 'crud-grid'}}) }}
-
-    {{ pagerfanta(pager, 'foundation') }}
-
-    {% block crud_actions %}
-        {% trans_default_domain config.translationDomain %}
-        <a class="button" href="{{ path(config.routePrefix ~ 'add') }}">{{ ('crud.' ~ config.name ~ '.index.action.add')|trans }}</a>
+    {% block crud_header %}
+        <h2>{{ ('crud.' ~ config.name ~ '.index.title')|trans({}, config.translationDomain) }}</h2>
+        {% include 'PrezentCrudBundle:Common:flashes.html.twig' %}
     {% endblock %}
 
-    <div id="crud-delete-modal" class="reveal-modal" data-reveal>
-        <a class="close-reveal-modal"><i class="fa fa-times"></i></a>
-        <h3>{{ ('modal.' ~ config.name ~ '.delete.title')|trans }}</h3>
-        <p>{{ ('modal.' ~ config.name ~ '.delete.text')|trans }}</p>
-        <ul class="button-group">
-            <li><a href="" class="button secondary cancel"><i class="fa fa-times"></i> {{ ('modal.' ~ config.name ~ '.delete.action.cancel')|trans }}</a></li>
-            <li><a href="" class="button primary delete"><i class="fa fa-check"></i> {{ ('modal.' ~ config.name ~ '.delete.action.delete')|trans }}</a></li>
-        </ul>
-    </div>
+    {% block crud_grid %}
+        {% if config.gridTheme %}
+            {% grid_theme grid config.gridTheme %}
+        {% endif %}
+
+        {{ grid(grid, pager, {'attr': {'class': 'crud-grid'}}) }}
+        {{ pagerfanta(pager, 'foundation') }}
+    {% endblock %}
+
+    {% block crud_actions %}
+        <a class="button" href="{{ path(config.routePrefix ~ 'add') }}">{{ ('crud.' ~ config.name ~ '.index.action.add')|trans({}, config.translationDomain) }}</a>
+    {% endblock %}
+
+    {% block crud_modals %}
+        {% include 'PrezentCrudBundle:Common:modal.html.twig' with {'action': 'delete'} %}
+    {% endblock %}
 {% endblock %}

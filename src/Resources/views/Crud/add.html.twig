@@ -1,21 +1,24 @@
 {% extends 'PrezentCrudBundle::layout.html.twig' %}
 
 {% block crud_content %}
-    {% trans_default_domain config.translationDomain %}
+    {% block crud_header %}
+        <h2>{{ ('crud.' ~ config.name ~ '.add.title')|trans({}, config.translationDomain) }}</h2>
+        {% include 'PrezentCrudBundle:Common:flashes.html.twig' %}
+    {% endblock %}
 
-    <h2>{{ ('crud.' ~ config.name ~ '.add.title')|trans }}</h2>
-    {% include 'PrezentCrudBundle:Common:flashes.html.twig' %}
+    {% block crud_form %}
+        {% if config.formTheme %}
+            {% form_theme form config.formTheme %}
+        {% endif %}
 
-    {% block crud_text %}{% endblock %}
+        {{ form_start(form) }}
+            {% for child in form %}
+                {{ form_row(child) }}
+            {% endfor %}
 
-    {% if config.formTheme %}
-        {% form_theme form config.formTheme %}
-    {% endif %}
-
-    {{ form_start(form) }}
-        {% for child in form %}
-            {{ form_row(child) }}
-        {% endfor %}
-        <input type="submit" value="{{ ('form.' ~ config.name ~ '.submit')|trans }}" />
-    {{ form_end(form) }}
+            {% block crud_actions %}
+                <input type="submit" value="{{ ('form.' ~ config.name ~ '.submit')|trans({}, config.translationDomain) }}" />
+            {% endblock %}
+        {{ form_end(form) }}
+    {% endblock %}
 {% endblock %}
