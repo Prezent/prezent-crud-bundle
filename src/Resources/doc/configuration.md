@@ -77,3 +77,8 @@ The order in which your grid will be sorted, can be `"ASC"` or `"DESC"`. Default
 The translation domain to use for all messages in the templates. Note that this does not effect the translation
 domain used in the form and the grid. You should still specify those using the `translation_domain` option in
 the from and grid itself. The default translation domain is `"messages"`.
+
+
+### `setTemplateVariables(array $vars)`
+
+Extra variables that you want to pass to the Twig template.

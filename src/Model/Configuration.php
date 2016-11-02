@@ -77,6 +77,11 @@ class Configuration
     private $translationDomain = 'messages';
 
     /**
+     * @var array
+     */
+    private $templateVariables = [];
+
+    /**
      * Constructor
      *
      * @param CrudController $controller
@@ -370,6 +375,28 @@ class Configuration
     public function setTranslationDomain($translationDomain)
     {
         $this->translationDomain = $translationDomain;
+        return $this;
+    }
+
+    /**
+     * Get templateVariables
+     *
+     * @return array
+     */
+    public function getTemplateVariables()
+    {
+        return $this->templateVariables;
+    }
+    
+    /**
+     * Set templateVariables
+     *
+     * @param array $templateVariables
+     * @return self
+     */
+    public function setTemplateVariables(array $templateVariables = [])
+    {
+        $this->templateVariables = $templateVariables;
         return $this;
     }
 

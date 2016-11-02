@@ -53,11 +53,11 @@ abstract class CrudController extends Controller
             $configuration->getGridOptions()
         );
 
-        return $this->render($this->getTemplate($request, 'index'), [
+        return $this->render($this->getTemplate($request, 'index'), array_merge([
             'config' => $configuration,
             'grid'   => $grid->createView(),
             'pager'  => $pager,
-        ]);
+        ], $configuration->getTemplateVariables()));
     }
 
     /**
@@ -94,10 +94,10 @@ abstract class CrudController extends Controller
             );
         }
 
-        return $this->render($this->getTemplate($request, 'add'), [
+        return $this->render($this->getTemplate($request, 'add'), array_merge([
             'config' => $configuration,
             'form'   => $form->createView(),
-        ]);
+        ], $configuration->getTemplateVariables()));
     }
 
     /**
@@ -134,10 +134,10 @@ abstract class CrudController extends Controller
             );
         }
 
-        return $this->render($this->getTemplate($request, 'edit'), [
+        return $this->render($this->getTemplate($request, 'edit'), array_merge([
             'config' => $configuration,
             'form'   => $form->createView(),
-        ]);
+        ], $configuration->getTemplateVariables()));
     }
 
     /**
