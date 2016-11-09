@@ -410,14 +410,6 @@ class Configuration
         if (!$this->entityClass) {
             throw new \RuntimeException('You must set the entityClass on the CRUD configuration');
         }
-
-        if (!$this->formType) {
-            throw new \RuntimeException('You must set the formType on the CRUD configuration');
-        }
-
-        if (!$this->gridType) {
-            throw new \RuntimeException('You must set the gridType on the CRUD configuration');
-        }
     }
 
     /**

@@ -33,6 +33,10 @@ abstract class CrudController extends Controller
     {
         $configuration = $this->getConfiguration();
 
+        if (!$configuration->getGridType()) {
+            throw new \RuntimeException('You must set the gridType on the CRUD configuration');
+        }
+
         $sortField = $request->get('sort_by', $configuration->getDefaultSortField());
         $sortOrder = $request->get('sort_order', $configuration->getDefaultSortOrder());
 
@@ -69,6 +73,10 @@ abstract class CrudController extends Controller
     {
         $configuration = $this->getConfiguration();
         $om = $this->getObjectManager();
+
+        if (!$configuration->getFormType()) {
+            throw new \RuntimeException('You must set the formType on the CRUD configuration');
+        }
 
         $form = $this->createForm(
             $configuration->getFormType(),
@@ -109,6 +117,10 @@ abstract class CrudController extends Controller
     {
         $configuration = $this->getConfiguration();
         $om = $this->getObjectManager();
+
+        if (!$configuration->getFormType()) {
+            throw new \RuntimeException('You must set the formType on the CRUD configuration');
+        }
 
         $form = $this->createForm(
             $configuration->getFormType(),
