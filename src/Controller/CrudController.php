@@ -8,9 +8,13 @@ use Doctrine\ORM\QueryBuilder;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 use Prezent\CrudBundle\Model\Configuration;
+use Prezent\Grid\Grid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Base crud controller
@@ -28,6 +32,8 @@ abstract class CrudController extends Controller
      * List objects
      *
      * @Route("/")
+     * @param Request $request
+     * @return RedirectResponse|Response
      */
     public function indexAction(Request $request)
     {
@@ -44,6 +50,7 @@ abstract class CrudController extends Controller
         $request->query->set('sort_by', $sortField);
         $request->query->set('sort_order', $sortOrder);
 
+        /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $this->getRepository()->createQueryBuilder('o');
         $queryBuilder->addOrderBy('o.' . $sortField, $sortOrder);
 
@@ -52,6 +59,7 @@ abstract class CrudController extends Controller
         $pager = new Pagerfanta(new DoctrineORMAdapter($queryBuilder));
         $pager->setCurrentPage($request->get('page', 1));
 
+        /** @var Grid $grid */
         $grid = $this->get('grid_factory')->createGrid(
             $configuration->getGridType(),
             $configuration->getGridOptions()
@@ -68,6 +76,8 @@ abstract class CrudController extends Controller
      * Add a new object
      *
      * @Route("/add")
+     * @param Request $request
+     * @return RedirectResponse|Response
      */
     public function addAction(Request $request)
     {
@@ -112,6 +122,9 @@ abstract class CrudController extends Controller
      * Edit an object
      *
      * @Route("/edit/{id}")
+     * @param Request $request
+     * @param $id
+     * @return RedirectResponse|Response
      */
     public function editAction(Request $request, $id)
     {
@@ -156,6 +169,8 @@ abstract class CrudController extends Controller
      * Delete an object
      *
      * @Route("/delete/{id}")
+     * @param $id
+     * @return RedirectResponse
      */
     public function deleteAction($id)
     {
@@ -220,7 +235,7 @@ abstract class CrudController extends Controller
      *
      * @param mixed $id
      * @return object
-     * @throws NotFoundException
+     * @throws NotFoundHttpException
      */
     protected function findObject($id)
     {
@@ -247,6 +262,7 @@ abstract class CrudController extends Controller
     /**
      * Get the template for an action
      *
+     * @param Request $request
      * @param string $action
      * @return string
      */
@@ -266,6 +282,7 @@ abstract class CrudController extends Controller
     /**
      * Get the object manager for the configured class
      *
+     * @param string $class
      * @return ObjectManager
      */
     protected function getObjectManager($class = null)
@@ -276,6 +293,7 @@ abstract class CrudController extends Controller
     /**
      * Get the repository for the configured class
      *
+     * @param string $class
      * @return ObjectRepository
      */
     protected function getRepository($class = null)
