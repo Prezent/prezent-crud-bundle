@@ -82,6 +82,11 @@ class Configuration
     private $templateVariables = [];
 
     /**
+     * @var int
+     */
+    private $resultsPerPage = 10;
+
+    /**
      * Constructor
      *
      * @param CrudController $controller
@@ -397,6 +402,25 @@ class Configuration
     public function setTemplateVariables(array $templateVariables = [])
     {
         $this->templateVariables = $templateVariables;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getResultsPerPage()
+    {
+        return $this->resultsPerPage;
+    }
+
+    /**
+     * @param int $resultsPerPage
+     *
+     * @return self
+     */
+    public function setResultsPerPage($resultsPerPage)
+    {
+        $this->resultsPerPage = $resultsPerPage;
         return $this;
     }
 

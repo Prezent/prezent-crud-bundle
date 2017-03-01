@@ -57,6 +57,7 @@ abstract class CrudController extends Controller
         $this->configureListCriteria($request, $queryBuilder);
 
         $pager = new Pagerfanta(new DoctrineORMAdapter($queryBuilder));
+        $pager->setMaxPerPage($request->get('resultsPerPage', $configuration->getResultsPerPage()));
         $pager->setCurrentPage($request->get('page', 1));
 
         /** @var Grid $grid */

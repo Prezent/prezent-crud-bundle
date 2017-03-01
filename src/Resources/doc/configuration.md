@@ -82,3 +82,8 @@ the from and grid itself. The default translation domain is `"messages"`.
 ### `setTemplateVariables(array $vars)`
 
 Extra variables that you want to pass to the Twig template.
+
+
+### `setResultsPerPage(int $resultsPerPage)`
+
+The number of results per page displayed by the grid. Defaults to 10.
