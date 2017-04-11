@@ -1,7 +1,7 @@
 Extending the base controller
 =============================
 
-You are free to exend the base CrudController in any way that you require. There
+You are free to extend the base CrudController in any way that you require. There
 are several helper methods to help you create your own actions, and a few methods
 that you can override to add extra behaviour to the built-in actions.
 
