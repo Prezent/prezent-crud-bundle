@@ -19,6 +19,7 @@
 
             {% block crud_actions %}
                 <input type="submit" value="{{ ('form.' ~ config.name ~ '.submit')|trans({}, config.translationDomain) }}" />
+                <a class="button secondary" href="{{ path(config.routePrefix ~ 'index') }}">{{ ('form.' ~ config.name ~ '.cancel')|trans({}, config.translationDomain) }}</a>
             {% endblock %}
         {{ form_end(form) }}
     {% endblock %}

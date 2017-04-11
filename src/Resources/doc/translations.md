@@ -17,6 +17,11 @@ crud:
         edit:
             title: 'Edit title'
 
+form:
+    <name>:
+        submit: 'Save object'
+        cancel: 'Cancel'
+
 flash:
     <name>:
         add:
