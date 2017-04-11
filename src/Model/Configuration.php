@@ -439,6 +439,7 @@ class Configuration
     /**
      * Get the default controller name
      *
+     * @param CrudController $controller
      * @return string
      */
     private function getDefaultName(CrudController $controller)
@@ -453,6 +454,7 @@ class Configuration
     /**
      * Get the default route prefix
      *
+     * @param CrudController $controller
      * @return string
      */
     private function getDefaultRoutePrefix(CrudController $controller)

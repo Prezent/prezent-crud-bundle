@@ -2,7 +2,7 @@
 
 namespace Prezent\CrudBundle\Templating;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
@@ -90,7 +90,7 @@ class TemplateGuesser
      * @param Request  $request    A Request instance
      * @param string   $engine
      *
-     * @return TemplateReference template reference
+     * @return TemplateReference|null template reference
      *
      * @throws \InvalidArgumentException
      */
@@ -106,7 +106,7 @@ class TemplateGuesser
         }
 
         if (null === $matchController) {
-            return;
+            return null;
         }
 
         if ($controller[1] === '__invoke') {
@@ -132,7 +132,7 @@ class TemplateGuesser
      *
      * @param string $class A fully qualified controller class name
      *
-     * @return Bundle|null $bundle A Bundle instance
+     * @return BundleInterface|null $bundle A Bundle instance
      */
     private function getBundleForClass($class)
     {
@@ -148,5 +148,7 @@ class TemplateGuesser
             }
             $reflectionClass = $reflectionClass->getParentClass();
         } while ($reflectionClass);
+
+        return null;
     }
 }
