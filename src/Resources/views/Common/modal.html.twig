@@ -1,11 +1,11 @@
 {% trans_default_domain config.translationDomain %}
 
-<div id="crud-{{ action }}-modal" class="reveal reveal-modal" data-reveal>
-    <a class="close-reveal-modal close-button" data-close><i class="fa fa-times"></i></a>
+<div id="crud-{{ action }}-modal" class="reveal" data-reveal>
+    <a class="close-button" data-close><i class="fa fa-times"></i></a>
     <h3>{{ ('modal.' ~ config.name ~ '.' ~ action ~ '.title')|trans }}</h3>
     <p>{{ ('modal.' ~ config.name ~ '.' ~ action ~ '.text')|trans }}</p>
     <ul class="button-group">
-        <li><a href="" class="button secondary cancel"><i class="fa fa-times"></i> {{ ('modal.' ~ config.name ~ '.' ~ action ~ '.action.cancel')|trans }}</a></li>
-        <li><a href="" class="button primary delete"><i class="fa fa-check"></i> {{ ('modal.' ~ config.name ~ '.' ~ action ~ '.action.delete')|trans }}</a></li>
+        <a href="" class="button secondary cancel"><i class="fa fa-times"></i> {{ ('modal.' ~ config.name ~ '.' ~ action ~ '.action.cancel')|trans }}</a>
+        <a href="" class="button primary delete"><i class="fa fa-check"></i> {{ ('modal.' ~ config.name ~ '.' ~ action ~ '.action.delete')|trans }}</a>
     </ul>
 </div>
