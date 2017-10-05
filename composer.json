@@ -8,7 +8,7 @@
         "php": "^5.5|^7.0",
         "doctrine/doctrine-bundle": "^1.6",
         "prezent/grid-bundle": "^0.4.0",
-        "sensio/framework-extra-bundle": "^3.0",
+        "sensio/framework-extra-bundle": "^3.0|^4.0",
         "symfony/framework-bundle": "^2.6|^3.0",
         "white-october/pagerfanta-bundle": "^1.0"
     },
