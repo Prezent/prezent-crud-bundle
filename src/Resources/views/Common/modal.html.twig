@@ -1,7 +1,7 @@
 {% trans_default_domain config.translationDomain %}
 
-<div id="crud-{{ action }}-modal" class="reveal-modal" data-reveal>
-    <a class="close-reveal-modal"><i class="fa fa-times"></i></a>
+<div id="crud-{{ action }}-modal" class="reveal reveal-modal" data-reveal>
+    <a class="close-reveal-modal close-button" data-close><i class="fa fa-times"></i></a>
     <h3>{{ ('modal.' ~ config.name ~ '.' ~ action ~ '.title')|trans }}</h3>
     <p>{{ ('modal.' ~ config.name ~ '.' ~ action ~ '.text')|trans }}</p>
     <ul class="button-group">
