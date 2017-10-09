@@ -16,7 +16,7 @@
     {% endblock %}
 
     {% block crud_actions %}
-        <a class="button" href="{{ path(config.routePrefix ~ 'add') }}">{{ ('crud.' ~ config.name ~ '.index.action.add')|trans({}, config.translationDomain) }}</a>
+        <a class="button" href="{{ path(config.routePrefix ~ 'add', config.routeParameters) }}">{{ ('crud.' ~ config.name ~ '.index.action.add')|trans({}, config.translationDomain) }}</a>
     {% endblock %}
 
     {% block crud_modals %}
