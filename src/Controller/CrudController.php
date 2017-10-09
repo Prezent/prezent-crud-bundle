@@ -173,7 +173,7 @@ abstract class CrudController extends Controller
      * @param $id
      * @return RedirectResponse
      */
-    public function deleteAction($id)
+    public function deleteAction(Request $request, $id)
     {
         $configuration = $this->getConfiguration($request);
         $object = $this->findObject($request, $id);
