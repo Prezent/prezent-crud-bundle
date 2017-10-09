@@ -4,7 +4,7 @@
     {% for message in messages %}
         <div class="callout {{ level == 'error' ? 'alert' : level }}" data-closable>
             {{ message|trans }}
-            <a href="#" class="close-button" data-close><i class="fa fa-times"></i></a>
+            <a class="close-button" data-close><i class="fa fa-times"></i></a>
         </div>
     {% endfor %}
 {% endfor %}
