@@ -111,10 +111,11 @@ use AppBundle\Form\Type\ProductType;
 use AppBundle\Grid\Type\ProductGridType;
 use Prezent\CrudBundle\Controller\CrudController;
 use Prezent\CrudBundle\Model\Configuration;
+use Symfony\Component\HttpFoundation\Request;
 
 class ProductController extends CrudController
 {
-    protected function configure(Configuration $config)
+    protected function configure(Request $request, Configuration $config)
     {
         $config
             ->setEntityClass(Product::class)

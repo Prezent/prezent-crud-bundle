@@ -9,12 +9,12 @@ that you can override to add extra behaviour to the built-in actions.
 Helper methods
 --------------
 
-### `getConfiguration()`
+### `getConfiguration([Request $request])`
 
-Get the CRUD configuration model.
+Get the CRUD configuration model. The first time you call this method you must pass a request. This is not required for any subsequent calls.
 
 
-### `findObject(mixed $id)`
+### `findObject(Request $request, mixed $id)`
 
 Find an object by its ID. The ID value is passed on to the Doctrine repository `find` method.
 If an object is not found, a `NotFoundHttpException` will be thrown.
@@ -84,7 +84,7 @@ Example usage:
 protected function newInstance(Request $request)
 {
     $type = $request->query->get('type');
-    $class = $this->getConfiguration()->getEntityClass();
+    $class = $this->getConfiguration($request)->getEntityClass();
 
     return new $class($type);
 }

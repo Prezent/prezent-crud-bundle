@@ -56,7 +56,6 @@ determined from the controller class, see also the
 [Symfony @Route documentation](http://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/annotations/routing.html#route-name).
 A controller class of `Vendor\AppBundle\ProductController` would have a prefix of `"vendor_app_product_"`.
 
-
 ### `setRouteParameters(array $routeParameters)`
 
 Pass extra parameters to the generated routes. By default no extra parameters are required.

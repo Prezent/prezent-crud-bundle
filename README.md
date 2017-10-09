@@ -14,7 +14,7 @@ use Prezent\CrudBundle\Model\Configuration;
 
 class ProductController extends CrudController
 {
-    protected function configure(Configuration $config)
+    protected function configure(Request $request, Configuration $config)
     {
         $config
             ->setEntityClass(Product::class)
