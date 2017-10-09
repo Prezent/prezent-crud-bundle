@@ -37,7 +37,7 @@ abstract class CrudController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $configuration = $this->getConfiguration();
+        $configuration = $this->getConfiguration($request);
 
         if (!$configuration->getGridType()) {
             throw new \RuntimeException('You must set the gridType on the CRUD configuration');
@@ -82,7 +82,7 @@ abstract class CrudController extends Controller
      */
     public function addAction(Request $request)
     {
-        $configuration = $this->getConfiguration();
+        $configuration = $this->getConfiguration($request);
         $om = $this->getObjectManager();
 
         if (!$configuration->getFormType()) {
@@ -129,7 +129,7 @@ abstract class CrudController extends Controller
      */
     public function editAction(Request $request, $id)
     {
-        $configuration = $this->getConfiguration();
+        $configuration = $this->getConfiguration($request);
         $om = $this->getObjectManager();
 
         if (!$configuration->getFormType()) {
@@ -138,7 +138,7 @@ abstract class CrudController extends Controller
 
         $form = $this->createForm(
             $configuration->getFormType(),
-            $this->findObject($id),
+            $this->findObject($request, $id),
             $configuration->getFormOptions()
         );
 
@@ -175,8 +175,8 @@ abstract class CrudController extends Controller
      */
     public function deleteAction($id)
     {
-        $configuration = $this->getConfiguration();
-        $object = $this->findObject($id);
+        $configuration = $this->getConfiguration($request);
+        $object = $this->findObject($request, $id);
 
         $om = $this->getObjectManager();
         $om->remove($object);
@@ -197,23 +197,29 @@ abstract class CrudController extends Controller
     /**
      * Set the configuration
      *
+     * @param Request $request
      * @param Configuration $config
      * @return void
      */
-    protected function configure(Configuration $config)
+    protected function configure(Request $request, Configuration $configuration)
     {
     }
 
     /**
      * Get the configuration
      *
+     * @param Request $request
      * @return Configuration
      */
-    protected function getConfiguration()
+    protected function getConfiguration(Request $request = null)
     {
         if (!$this->configuration) {
+            if (!$request) {
+                throw new \RuntimeException('The first time getConfiguration() is called, you must pass a Request.');
+            }
+
             $this->configuration = new Configuration($this);
-            $this->configure($this->configuration);
+            $this->configure($request, $this->configuration);
             $this->configuration->validate();
         }
 
@@ -238,11 +244,11 @@ abstract class CrudController extends Controller
      * @return object
      * @throws NotFoundHttpException
      */
-    protected function findObject($id)
+    protected function findObject(Request $request, $id)
     {
         if (!($object = $this->getRepository()->find($id))) {
             throw $this->createNotFoundException(
-                sprintf('Object %s(%s) not found', $this->getConfiguration()->getEntityClass(), $id)
+                sprintf('Object %s(%s) not found', $this->getConfiguration($request)->getEntityClass(), $id)
             );
         }
 
