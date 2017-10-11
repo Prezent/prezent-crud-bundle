@@ -97,7 +97,7 @@ abstract class CrudController extends Controller
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $om->persist($form->getData());
 
             try {
@@ -144,7 +144,7 @@ abstract class CrudController extends Controller
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $om->persist($form->getData());
 
             try {
