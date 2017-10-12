@@ -17,7 +17,7 @@ CouchDB, PHPRC), as long as its ObjectManager is known by the registry in the Do
 The Symfony form type to use for creating and editing objects.
 
 
-### `setFormTheme(string $template)`
+### `setFormTheme(string|array $template)`
 
 The template to use as a custom form theme.
 
@@ -32,7 +32,7 @@ Options to pass to the form builder.
 The grid type to use for creating and editing objects.
 
 
-### `setGridTheme(string $template)`
+### `setGridTheme(string|array $template)`
 
 The template to use as a custom grid theme.
 

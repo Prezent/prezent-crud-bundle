@@ -43,7 +43,7 @@ class Configuration
     private $gridType;
 
     /**
-     * @var string
+     * @var string|array
      */
     private $gridTheme;
 
@@ -58,7 +58,7 @@ class Configuration
     private $formType;
 
     /**
-     * @var string
+     * @var string|array
      */
     private $formTheme;
 
@@ -239,7 +239,7 @@ class Configuration
     /**
      * Get gridTheme
      *
-     * @return string
+     * @return string|array
      */
     public function getGridTheme()
     {
@@ -249,7 +249,7 @@ class Configuration
     /**
      * Set gridTheme
      *
-     * @param string $gridTheme
+     * @param string|array $gridTheme
      * @return self
      */
     public function setGridTheme($gridTheme)
@@ -305,7 +305,7 @@ class Configuration
     /**
      * Getter for formTheme
      *
-     * @return string
+     * @return string|array
      */
     public function getFormTheme()
     {
@@ -315,7 +315,7 @@ class Configuration
     /**
      * Setter for formTheme
      *
-     * @param string $formTheme
+     * @param string|array $formTheme
      * @return self
      */
     public function setFormTheme($formTheme)
