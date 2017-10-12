@@ -67,6 +67,7 @@ abstract class CrudController extends Controller
         );
 
         return $this->render($this->getTemplate($request, 'index'), array_merge([
+            'base_template' => $this->getTemplate($request, 'base'),
             'config' => $configuration,
             'grid'   => $grid->createView(),
             'pager'  => $pager,
@@ -114,6 +115,7 @@ abstract class CrudController extends Controller
         }
 
         return $this->render($this->getTemplate($request, 'add'), array_merge([
+            'base_template' => $this->getTemplate($request, 'base'),
             'config' => $configuration,
             'form'   => $form->createView(),
         ], $configuration->getTemplateVariables()));
@@ -161,6 +163,7 @@ abstract class CrudController extends Controller
         }
 
         return $this->render($this->getTemplate($request, 'edit'), array_merge([
+            'base_template' => $this->getTemplate($request, 'base'),
             'config' => $configuration,
             'form'   => $form->createView(),
         ], $configuration->getTemplateVariables()));

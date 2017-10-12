@@ -1,8 +1,8 @@
 Templating
 ==========
 
-The first thing you probably want to do is override the base template that is used for all 
-actions. The base template is `@PrezentCrud/layout.html.twig`. To override it you can
+The first thing you probably want to do is override the layout that is used for all 
+actions. The layout template is `@PrezentCrud/layout.html.twig`. To override it you can
 create a template in `app/Resources/PrezentCrudBundle/views/layout.html.twig`. Be sure to include
 the `crud_content` block where all content is rendered.
 
@@ -44,6 +44,19 @@ class ProductController extends AdminController
 To customize the index template for your products controller, simply create the `AppBundle/Resources/views/Product/index.html.twig`
 file. To customize the index view for all your admin controllers, create the `AppBundle/Resources/views/Admin/index.html.twig` file.
 The CrudController will automatically use the first template that exists.
+
+You can also change the templates for all actions of a single controller by creating a `base.html.twig`. For example:
+
+```twig
+{# AppBundle/Resources/views/Product/base.html.twig #}
+
+{% extends '@PrezentCrud/Crud/base.html.twig' %}
+
+{% block crud_header %}
+    {{ parent() }}
+    <p>Custom header content</p>
+{% endblock %}
+```
 
 
 Flashes
