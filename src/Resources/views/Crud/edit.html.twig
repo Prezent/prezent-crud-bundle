@@ -1,12 +1,13 @@
-{% extends 'PrezentCrudBundle::layout.html.twig' %}
+{% extends '@PrezentCrud/layout.html.twig' %}
 
 {% block crud_content %}
     {% block crud_header %}
         <h2>{{ ('crud.' ~ config.name ~ '.' ~ config.action ~ '.title')|trans({}, config.translationDomain) }}</h2>
-        {% include 'PrezentCrudBundle:Common:flashes.html.twig' %}
     {% endblock %}
 
     {% block crud_form %}
+        {% include '@PrezentCrud/Common/flashes.html.twig' %}
+
         {% if config.formTheme %}
             {% form_theme form config.formTheme %}
         {% endif %}

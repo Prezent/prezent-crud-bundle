@@ -55,9 +55,9 @@ public function viewAction(Request $request)
 
 It would try and find the following template, rendering the first one that exists:
 
-1. `AppBundle:Product:view.html.twig`
-2. `AppBundle:Admin:view.html.twig`
-3. `PrezentCrudBundle:Crud:view.html.twig`
+1. `@App/Product/view.html.twig`
+2. `@App/Admin/view.html.twig`
+3. `@PrezentCrud/Crud/view.html.twig`
 
 
 ### `getObjectManager([$class])`

@@ -2,14 +2,14 @@ Templating
 ==========
 
 The first thing you probably want to do is override the base template that is used for all 
-actions. The base template is `PrezentCrudBundle::layout.html.twig`. To override it you can
+actions. The base template is `@PrezentCrud/layout.html.twig`. To override it you can
 create a template in `app/Resources/PrezentCrudBundle/views/layout.html.twig`. Be sure to include
 the `crud_content` block where all content is rendered.
 
 ```twig
 {# app/Resources/PrezentCrudBundle/views/layout.html.twig #}
 
-{% extends '::base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block body %}
     <div class="crud-content">
@@ -52,5 +52,5 @@ Flashes
 There is a generic template that you can include in your own custom actions to display all flashes.
 
 ```twig
-{% include 'PrezentCrudBundle:Common:flashes.html.twig' %}
+{% include '@PrezentCrud/Common/flashes.html.twig' %}
 ```
