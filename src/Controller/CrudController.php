@@ -218,7 +218,7 @@ abstract class CrudController extends Controller
                 throw new \RuntimeException('The first time getConfiguration() is called, you must pass a Request.');
             }
 
-            $this->configuration = new Configuration($this);
+            $this->configuration = new Configuration($request);
             $this->configure($request, $this->configuration);
             $this->configuration->validate();
         }

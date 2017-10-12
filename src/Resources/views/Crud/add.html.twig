@@ -2,7 +2,7 @@
 
 {% block crud_content %}
     {% block crud_header %}
-        <h2>{{ ('crud.' ~ config.name ~ '.add.title')|trans({}, config.translationDomain) }}</h2>
+        <h2>{{ ('crud.' ~ config.name ~ '.' ~ config.action ~ '.title')|trans({}, config.translationDomain) }}</h2>
         {% include 'PrezentCrudBundle:Common:flashes.html.twig' %}
     {% endblock %}
 

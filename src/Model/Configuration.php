@@ -3,6 +3,7 @@
 namespace Prezent\CrudBundle\Model;
 
 use Prezent\CrudBundle\Controller\CrudController;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Crud configuration
@@ -15,6 +16,11 @@ class Configuration
      * @var string
      */
     private $name;
+
+    /**
+     * @var string
+     */
+    private $action;
 
     /**
      * @var string
@@ -89,12 +95,13 @@ class Configuration
     /**
      * Constructor
      *
-     * @param CrudController $controller
+     * @param Request $request
      */
-    public function __construct(CrudController $controller)
+    public function __construct(Request $request)
     {
-        $this->name = $this->getDefaultName($controller);
-        $this->routePrefix = $this->getDefaultRoutePrefix($controller);
+        $this->name = $this->getDefaultName($request);
+        $this->action = $this->getDefaultAction($request);
+        $this->routePrefix = $this->getDefaultRoutePrefix($request);
     }
 
     /**
@@ -116,6 +123,28 @@ class Configuration
     public function setName($name)
     {
         $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * Get action
+     *
+     * @return string
+     */
+    public function getAction()
+    {
+        return $this->action;
+    }
+    
+    /**
+     * Set action
+     *
+     * @param string $action
+     * @return self
+     */
+    public function setAction($action)
+    {
+        $this->action = $action;
         return $this;
     }
 
@@ -439,12 +468,12 @@ class Configuration
     /**
      * Get the default controller name
      *
-     * @param CrudController $controller
+     * @param Request $request
      * @return string
      */
-    private function getDefaultName(CrudController $controller)
+    private function getDefaultName(Request $request)
     {
-        if (!preg_match('/(\w+)Controller$/', get_class($controller), $match)) {
+        if (!preg_match('/(\w+)Controller:/', $request->attributes->get('_controller'), $match)) {
             throw new \RuntimeException('Unable to determine controller name');
         }
 
@@ -452,15 +481,28 @@ class Configuration
     }
 
     /**
-     * Get the default route prefix
+     * Get the default controller action
      *
-     * @param CrudController $controller
+     * @param Request $request
      * @return string
      */
-    private function getDefaultRoutePrefix(CrudController $controller)
+    private function getDefaultAction(Request $request)
     {
-        $name = strtolower(str_replace('\\', '_', get_class($controller)));
+        if (!preg_match('/(\w+)Action$/', $request->attributes->get('_controller'), $match)) {
+            throw new \RuntimeException('Unable to determine controller name');
+        }
 
-        return preg_replace(['/(bundle|controller)_?/', '/__/'], ['_', '_'], $name);
+        return strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $match[1]));
+    }
+
+    /**
+     * Get the default route prefix
+     *
+     * @param Request $request
+     * @return string
+     */
+    private function getDefaultRoutePrefix(Request $request)
+    {
+        return preg_replace('/[[:alnum:]]+$/', '', $request->attributes->get('_route'));
     }
 }

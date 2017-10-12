@@ -44,15 +44,22 @@ Options to pass to the grid builder.
 
 ### `setName(string $name)`
 
-The name of the controller. A default name is automatically constructed from your controller
-class. A `ProductController` would have `"product"` as a name. A `ProductTypeController` would
+The name of the controller. A default name is automatically constructed from the `_controller` parameter
+in the request. A `ProductController` would have `"product"` as a name. A `ProductTypeController` would
 have `"producttype"` as a name. Use this setting to override the name.
+
+
+### `setAction(string $action)`
+
+The name of the controller action. A default action is automatically constructed from the `_controller` parameter
+in the request. A `ProductController::indexAction` would have `"index"` as an action. A `ProductController::someLongAction` would
+have `"long_action"` as an action. Use this setting to override the action name.
 
 
 ### `setRoutePrefix(string $routePrefix)`
 
 The route prefix to use. This is the part of the route name without the action. This is automatically
-determined from the controller class, see also the
+determined from the `_route` parameter of the request, see also the
 [Symfony @Route documentation](http://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/annotations/routing.html#route-name).
 A controller class of `Vendor\AppBundle\ProductController` would have a prefix of `"vendor_app_product_"`.
 

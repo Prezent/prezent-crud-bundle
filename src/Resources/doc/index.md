@@ -40,9 +40,9 @@ public function registerBundles()
 {
     $bundles = array(
         // Assuming a Symfony standard edition, just add these bundles
+        new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
         new Prezent\GridBundle\PrezentGridBundle(),
         new Prezent\CrudBundle\PrezentCrudBundle(),
-        new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
     );
 }
 ```
