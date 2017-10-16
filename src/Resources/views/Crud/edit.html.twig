@@ -6,7 +6,11 @@
     {% block crud_form %}
 
         {% if config.formTheme %}
-            {% form_theme form config.formTheme %}
+            {% if config.formTheme is iterable %}
+                {% form_theme form with config.formTheme %}
+            {% else %}
+                {% form_theme form config.formTheme %}
+            {% endif %}
         {% endif %}
 
         {{ form_start(form) }}
