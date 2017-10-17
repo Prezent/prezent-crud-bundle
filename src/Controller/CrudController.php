@@ -249,9 +249,11 @@ abstract class CrudController extends Controller
      */
     protected function findObject(Request $request, $id)
     {
+        $configuration = $this->getConfiguration($request);
+
         if (!($object = $this->getRepository()->find($id))) {
             throw $this->createNotFoundException(
-                sprintf('Object %s(%s) not found', $this->getConfiguration($request)->getEntityClass(), $id)
+                sprintf('Object %s(%s) not found', $configuration->getEntityClass(), $id)
             );
         }
 
