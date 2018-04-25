@@ -20,6 +20,7 @@ Index
 5. [Templating](templating.md)
 6. [Translations](translations.md)
 7. [Delete modals](modals.md)
+8. [Events](events.md)
 
 
 Installation

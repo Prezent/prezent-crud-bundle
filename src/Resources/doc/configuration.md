@@ -5,6 +5,15 @@ The Configuration model allows you to configure how the default CRUD actions wor
 are thee required settings: the entity class, the form type and the grid type. All other
 settings are optional and have sane defaults.
 
+### `addEventListener(string $eventName, $handler, int $priority = 0)`
+
+Add an event listener, see [more about events](events.md)
+
+
+### `addEventSubscriber(EventSubscriberInterface $subscriber)`
+
+Add an event subscriber, see [more about events](events.md)
+
 
 ### `setEntityClass(string $entityClass)`
 
