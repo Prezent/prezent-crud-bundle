@@ -7,6 +7,11 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\QueryBuilder;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
+use Prezent\CrudBundle\CrudEvents;
+use Prezent\CrudBundle\Event\CrudEvent;
+use Prezent\CrudBundle\Event\PostFlushEvent;
+use Prezent\CrudBundle\Event\PreFlushEvent;
+use Prezent\CrudBundle\Event\PreSubmitEvent;
 use Prezent\CrudBundle\Model\Configuration;
 use Prezent\Grid\Grid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -84,28 +89,50 @@ abstract class CrudController extends Controller
     public function addAction(Request $request)
     {
         $configuration = $this->getConfiguration($request);
+        $dispatcher = $configuration->getEventDispatcher();
         $om = $this->getObjectManager();
 
         if (!$configuration->getFormType()) {
             throw new \RuntimeException('You must set the formType on the CRUD configuration');
         }
 
-        $form = $this->createForm(
-            $configuration->getFormType(),
-            $this->newInstance($request),
-            $configuration->getFormOptions()
-        );
+        $object = $this->newInstance($request);
+        $form = $this->createForm($configuration->getFormType(), $object, $configuration->getFormOptions());
+
+        $event = new PreSubmitEvent($configuration, $request, $object, $form);
+        $dispatcher->dispatch(CrudEvents::PRE_SUBMIT, $event);
+
+        if ($event->hasResponse()) {
+            return $response;
+        }
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $om->persist($form->getData());
+            $object = $form->getData();
+            $om->persist($object);
+
+            $event = new PreFlushEvent($configuration, $request, $object);
+            $dispatcher->dispatch(CrudEvents::PRE_FLUSH, $event);
+
+            if ($event->hasResponse()) {
+                return $event->getResponse();
+            }
+
+            $event = new PostFlushEvent($configuration, $request, $object);
 
             try {
                 $om->flush();
                 $this->addFlash('success', sprintf('flash.%s.add.success', $configuration->getName()));
             } catch (\Exception $e) {
+                $event->setException($e);
                 $this->addFlash('error', sprintf('flash.%s.add.error', $configuration->getName()));
+            }
+
+            $dispatcher->dispatch(CrudEvents::POST_FLUSH, $event);
+
+            if ($event->hasResponse()) {
+                return $response;
             }
 
             return $this->redirectToRoute(
@@ -132,28 +159,49 @@ abstract class CrudController extends Controller
     public function editAction(Request $request, $id)
     {
         $configuration = $this->getConfiguration($request);
+        $dispatcher = $configuration->getEventDispatcher();
         $om = $this->getObjectManager();
 
         if (!$configuration->getFormType()) {
             throw new \RuntimeException('You must set the formType on the CRUD configuration');
         }
 
-        $form = $this->createForm(
-            $configuration->getFormType(),
-            $this->findObject($request, $id),
-            $configuration->getFormOptions()
-        );
+        $object = $this->findObject($request, $id);
+        $form = $this->createForm($configuration->getFormType(), $object, $configuration->getFormOptions());
+
+        $event = new PreSubmitEvent($configuration, $request, $object, $form);
+        $dispatcher->dispatch(CrudEvents::PRE_SUBMIT, $event);
+
+        if ($event->hasResponse()) {
+            return $event->getResponse();
+        }
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $om->persist($form->getData());
+            $om->persist($object);
+
+            $event = new PreFlushEvent($configuration, $request, $object);
+            $dispatcher->dispatch(CrudEvents::PRE_FLUSH, $event);
+
+            if ($event->hasResponse()) {
+                return $event->getResponse();
+            }
+
+            $event = new PostFlushEvent($configuration, $request, $object);
 
             try {
                 $om->flush();
                 $this->addFlash('success', sprintf('flash.%s.edit.success', $configuration->getName()));
             } catch (\Exception $e) {
+                $event->setException($e);
                 $this->addFlash('error', sprintf('flash.%s.edit.error', $configuration->getName()));
+            }
+
+            $dispatcher->dispatch(CrudEvents::POST_FLUSH, $event);
+
+            if ($event->hasResponse()) {
+                return $event->getResponse();
             }
 
             return $this->redirectToRoute(
@@ -179,8 +227,17 @@ abstract class CrudController extends Controller
     public function deleteAction(Request $request, $id)
     {
         $configuration = $this->getConfiguration($request);
+        $dispatcher = $configuration->getEventDispatcher();
         $object = $this->findObject($request, $id);
 
+        $event = new PreFlushEvent($configuration, $request, $object);
+        $dispatcher->dispatch(CrudEvents::PRE_FLUSH, $event);
+
+        if ($event->hasResponse()) {
+            return $event->getResponse();
+        }
+
+        $event = new PostFlushEvent($configuration, $request, $object);
         $om = $this->getObjectManager();
         $om->remove($object);
 
@@ -188,7 +245,14 @@ abstract class CrudController extends Controller
             $om->flush();
             $this->addFlash('success', sprintf('flash.%s.delete.success', $configuration->getName()));
         } catch (\Exception $e) {
+            $event->setException($e);
             $this->addFlash('error', sprintf('flash.%s.delete.error', $configuration->getName()));
+        }
+
+        $dispatcher->dispatch(CrudEvents::POST_FLUSH, $event);
+
+        if ($event->hasResponse()) {
+            return $event->getResponse();
         }
 
         return $this->redirectToRoute(

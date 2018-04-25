@@ -3,6 +3,9 @@
 namespace Prezent\CrudBundle\Model;
 
 use Prezent\CrudBundle\Controller\CrudController;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -93,6 +96,11 @@ class Configuration
     private $resultsPerPage = 10;
 
     /**
+     * @var EventDispatcherInterface
+     */
+    private $dispatcher;
+
+    /**
      * Constructor
      *
      * @param Request $request
@@ -102,6 +110,7 @@ class Configuration
         $this->name = $this->getDefaultName($request);
         $this->action = $this->getDefaultAction($request);
         $this->routePrefix = $this->getDefaultRoutePrefix($request);
+        $this->dispatcher = new EventDispatcher();
     }
 
     /**
@@ -450,6 +459,42 @@ class Configuration
     public function setResultsPerPage($resultsPerPage)
     {
         $this->resultsPerPage = $resultsPerPage;
+        return $this;
+    }
+
+    /**
+     * Get dispatcher
+     *
+     * @return EventDispatcherInterface
+     */
+    public function getEventDispatcher()
+    {
+        return $this->dispatcher;
+    }
+
+    /**
+     * Add an event listener
+     *
+     * @param string $eventName
+     * @param callable $listener
+     * @param int $priority
+     * @return self
+     */
+    public function addEventListener($eventName, $listener, $priority = 0)
+    {
+        $this->dispatcher->addListener($eventName, $listener, $priority);
+        return $this;
+    }
+
+    /**
+     * Add an event subscriber
+     *
+     * @param EventSubscriberInterface $subscriber
+     * @return self
+     */
+    public function addEventSubscriber(EventSubscriberInterface $subscriber)
+    {
+        $this->dispatcher->addSubscriber($subscriber);
         return $this;
     }
 
