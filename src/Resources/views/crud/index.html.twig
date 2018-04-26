@@ -1,7 +1,7 @@
 {% extends base_template %}
 
 {% block crud_body %}
-    {% include '@PrezentCrud/Common/flashes.html.twig' %}
+    {% include '@PrezentCrud/common/flashes.html.twig' %}
 
     {% block crud_grid %}
 
@@ -18,6 +18,6 @@
     {% endblock %}
 
     {% block crud_modals %}
-        {% include '@PrezentCrud/Common/modal.html.twig' with {'action': 'delete'} %}
+        {% include '@PrezentCrud/common/modal.html.twig' with {'action': 'delete'} %}
     {% endblock %}
 {% endblock %}

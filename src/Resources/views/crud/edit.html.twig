@@ -1,14 +1,14 @@
 {% extends base_template %}
 
 {% block crud_body %}
-    {% include '@PrezentCrud/Common/flashes.html.twig' %}
+    {% include '@PrezentCrud/common/flashes.html.twig' %}
 
     {% block crud_form %}
 
         {% if config.formTheme %}
             {% if config.formTheme is iterable %}
                 {% form_theme form with config.formTheme %}
-            {% elseif config.formTheme %}
+            {% else %}
                 {% form_theme form config.formTheme %}
             {% endif %}
         {% endif %}

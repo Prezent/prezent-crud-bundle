@@ -347,7 +347,7 @@ abstract class CrudController extends Controller
         $templates = $this->get('prezent_crud.template_guesser')->guessTemplateNames([$this, $action], $request);
 
         foreach ($templates as $template) {
-            if ($this->get('templating')->exists($template)) {
+            if ($this->get('twig')->getLoader()->exists($template)) {
                 return $template;
             }
         }

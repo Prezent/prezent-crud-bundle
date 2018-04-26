@@ -5,7 +5,6 @@ namespace Prezent\CrudBundle\Templating;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
 use Doctrine\Common\Util\ClassUtils;
 
 /**
@@ -48,11 +47,11 @@ class TemplateGuesser
      * @param Request  $request    A Request instance
      * @param string   $engine
      *
-     * @return TemplateReference[] Array of template references
+     * @return string[] Array of template references
      *
      * @throws \InvalidArgumentException
      */
-    public function guessTemplateNames($controller, Request $request, $engine = 'twig')
+    public function guessTemplateNames($controller, Request $request)
     {
         if (is_object($controller) && method_exists($controller, '__invoke')) {
             $controller = [$controller, '__invoke'];
@@ -72,7 +71,7 @@ class TemplateGuesser
         do {
             $controller[0] = $reflClass->getName();
 
-            if ($template = $this->guessTemplateName($controller, $request, $engine)) {
+            if ($template = $this->guessTemplateName($controller, $request)) {
                 $templates[] = $template;
             }
 
@@ -94,13 +93,14 @@ class TemplateGuesser
      *
      * @throws \InvalidArgumentException
      */
-    private function guessTemplateName($controller, Request $request, $engine)
+    private function guessTemplateName($controller, Request $request)
     {
         $matchController = null;
 
         foreach ($this->controllerPatterns as $pattern) {
             if (preg_match($pattern, $controller[0], $tempMatch)) {
                 $matchController = $tempMatch;
+                $matchController = str_replace('\\', '/', strtolower(preg_replace('/([a-z\d])([A-Z])/', '\\1_\\2', $tempMatch[1])));
                 break;
             }
         }
@@ -113,18 +113,13 @@ class TemplateGuesser
             $matchAction = $matchController;
             $matchController = null;
         } elseif (!preg_match('/^(.+)Action$/', $controller[1], $matchAction)) {
-            $matchAction = [null, $controller[1]];
+            $matchAction = preg_replace('/Action$/', '', $controller[1]);
         }
 
-        $bundle = $this->getBundleForClass($controller[0]);
+        $matchAction = strtolower(preg_replace('/([a-z\d])([A-Z])/', '\\1_\\2', $matchAction));
+        $bundleName = $this->getBundleForClass($controller[0]);
 
-        if ($bundle) {
-            $bundleName = $bundle->getName();
-        } else {
-            $bundleName = null;
-        }
-
-        return new TemplateReference($bundleName, $matchController[1], $matchAction[1], $request->getRequestFormat(), $engine);
+        return sprintf(($bundleName ? '@'.$bundleName.'/' : '').$matchController.($matchController ? '/' : '').$matchAction.'.'.$request->getRequestFormat().'.twig');
     }
 
     /**
@@ -142,8 +137,11 @@ class TemplateGuesser
         do {
             $namespace = $reflectionClass->getNamespaceName();
             foreach ($bundles as $bundle) {
+                if ('Symfony\Bundle\FrameworkBundle' === $bundle->getNamespace()) {
+                    continue;
+                }
                 if (0 === strpos($namespace, $bundle->getNamespace())) {
-                    return $bundle;
+                    return preg_replace('/Bundle$/', '', $bundle->getName());
                 }
             }
             $reflectionClass = $reflectionClass->getParentClass();
