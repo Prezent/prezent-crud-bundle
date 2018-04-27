@@ -134,18 +134,15 @@ class TemplateGuesser
         $reflectionClass = new \ReflectionClass($class);
         $bundles = $this->kernel->getBundles();
 
-        do {
-            $namespace = $reflectionClass->getNamespaceName();
-            foreach ($bundles as $bundle) {
-                if ('Symfony\Bundle\FrameworkBundle' === $bundle->getNamespace()) {
-                    continue;
-                }
-                if (0 === strpos($namespace, $bundle->getNamespace())) {
-                    return preg_replace('/Bundle$/', '', $bundle->getName());
-                }
+        $namespace = $reflectionClass->getNamespaceName();
+        foreach ($bundles as $bundle) {
+            if ('Symfony\Bundle\FrameworkBundle' === $bundle->getNamespace()) {
+                continue;
             }
-            $reflectionClass = $reflectionClass->getParentClass();
-        } while ($reflectionClass);
+            if (0 === strpos($namespace, $bundle->getNamespace())) {
+                return preg_replace('/Bundle$/', '', $bundle->getName());
+            }
+        }
 
         return null;
     }
