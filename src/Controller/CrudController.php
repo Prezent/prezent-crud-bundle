@@ -145,6 +145,7 @@ abstract class CrudController extends Controller
             'base_template' => $this->getTemplate($request, 'base'),
             'config' => $configuration,
             'form'   => $form->createView(),
+            'object' => $object,
         ], $configuration->getTemplateVariables()));
     }
 
@@ -214,6 +215,7 @@ abstract class CrudController extends Controller
             'base_template' => $this->getTemplate($request, 'base'),
             'config' => $configuration,
             'form'   => $form->createView(),
+            'object' => $object,
         ], $configuration->getTemplateVariables()));
     }
 
