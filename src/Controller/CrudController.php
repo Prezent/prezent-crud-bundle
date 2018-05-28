@@ -137,7 +137,7 @@ abstract class CrudController extends Controller
             $dispatcher->dispatch(CrudEvents::POST_FLUSH, $event);
 
             if ($event->hasResponse()) {
-                return $response;
+                return $event->getResponse();
             }
 
             return $this->redirectToRoute(

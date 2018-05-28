@@ -5,6 +5,7 @@ namespace Prezent\CrudBundle\Event;
 use Prezent\CrudBundle\Model\Configuration;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Base event class
