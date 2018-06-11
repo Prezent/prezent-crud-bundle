@@ -55,7 +55,8 @@ Options to pass to the grid builder.
 
 The name of the controller. A default name is automatically constructed from the `_controller` parameter
 in the request. A `ProductController` would have `"product"` as a name. A `ProductTypeController` would
-have `"producttype"` as a name. Use this setting to override the name.
+have `"producttype"` as a name. Sub-namespaces will be delimited by underscores. Your `Product\TypeController`
+would have `product_type` as a name. Use this setting to override the name.
 
 
 ### `setAction(string $action)`

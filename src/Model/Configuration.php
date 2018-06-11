@@ -122,7 +122,7 @@ class Configuration
     {
         return $this->name;
     }
-    
+
     /**
      * Set name
      *
@@ -144,7 +144,7 @@ class Configuration
     {
         return $this->action;
     }
-    
+
     /**
      * Set action
      *
@@ -166,7 +166,7 @@ class Configuration
     {
         return $this->routePrefix;
     }
-    
+
     /**
      * Set routePrefix
      *
@@ -188,7 +188,7 @@ class Configuration
     {
         return $this->routeParameters;
     }
-    
+
     /**
      * Set routeParameters
      *
@@ -232,7 +232,7 @@ class Configuration
     {
         return $this->gridType;
     }
-    
+
     /**
      * Set gridType
      *
@@ -254,7 +254,7 @@ class Configuration
     {
         return $this->gridTheme;
     }
-    
+
     /**
      * Set gridTheme
      *
@@ -276,7 +276,7 @@ class Configuration
     {
         return $this->gridOptions;
     }
-    
+
     /**
      * Setter for gridOptions
      *
@@ -298,7 +298,7 @@ class Configuration
     {
         return $this->formType;
     }
-    
+
     /**
      * Set formType
      *
@@ -320,7 +320,7 @@ class Configuration
     {
         return $this->formTheme;
     }
-    
+
     /**
      * Setter for formTheme
      *
@@ -342,7 +342,7 @@ class Configuration
     {
         return $this->formOptions;
     }
-    
+
     /**
      * Setter for formOptions
      *
@@ -364,7 +364,7 @@ class Configuration
     {
         return $this->defaultSortField;
     }
-    
+
     /**
      * Setter for defaultSortField
      *
@@ -386,7 +386,7 @@ class Configuration
     {
         return $this->defaultSortOrder;
     }
-    
+
     /**
      * Setter for defaultSortOrder
      *
@@ -408,7 +408,7 @@ class Configuration
     {
         return $this->translationDomain;
     }
-    
+
     /**
      * Set translationDomain
      *
@@ -430,7 +430,7 @@ class Configuration
     {
         return $this->templateVariables;
     }
-    
+
     /**
      * Set templateVariables
      *
@@ -518,11 +518,11 @@ class Configuration
      */
     private function getDefaultName(Request $request)
     {
-        if (!preg_match('/(\w+)Controller:/', $request->attributes->get('_controller'), $match)) {
+        if (!preg_match('/Bundle\\\\Controller\\\\([\w\\\\]+)Controller:/', $request->attributes->get('_controller'), $match)) {
             throw new \RuntimeException('Unable to determine controller name');
         }
 
-        return strtolower($match[1]);
+        return strtolower(str_replace('\\', '_', $match[1]));
     }
 
     /**
