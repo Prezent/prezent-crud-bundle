@@ -1,6 +1,6 @@
 <?php
 
-namespace Prezent\CrudBundle\Tests\Fixture\Controller;
+namespace Prezent\CrudBundle\Tests\Fixture\InheritingBundle\Controller;
 
 use Prezent\CrudBundle\Controller\CrudController;
 

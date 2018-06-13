@@ -4,7 +4,7 @@ namespace Prezent\CrudBundle\Tests\Model;
 
 use PHPUnit\Framework\TestCase;
 use Prezent\CrudBundle\Model\Configuration;
-use Prezent\CrudBundle\Tests\Fixture\Controller\AdminController;
+use Prezent\CrudBundle\Tests\Fixture\InheritingBundle\Controller\AdminController;
 use Symfony\Component\HttpFoundation\Request;
 
 class ConfigurationTest extends TestCase
