@@ -20,7 +20,6 @@ class TemplateGuesserTest extends TestCase
         ;
 
         $kernel
-            ->expects($this->any())
             ->method('getBundles')
             ->will($this->returnValue([
                 'TestBundle' => new TestBundle(),
