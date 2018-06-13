@@ -2,6 +2,7 @@
 
 namespace Prezent\CrudBundle\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Prezent\CrudBundle\PrezentCrudBundle;
 use Prezent\CrudBundle\Templating\TemplateGuesser;
 use Prezent\CrudBundle\Tests\Fixture\Controller\ProductController;
@@ -9,7 +10,7 @@ use Prezent\CrudBundle\Tests\Fixture\TestBundle;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-class TemplateGuesserTest extends \PHPUnit_Framework_TestCase
+class TemplateGuesserTest extends TestCase
 {
     public function testInheritance()
     {
@@ -31,8 +32,8 @@ class TemplateGuesserTest extends \PHPUnit_Framework_TestCase
         $templates = $guesser->guessTemplateNames([ProductController::class, 'index'], new Request(), 'twig');
 
         $this->assertCount(3, $templates);
-        $this->assertEquals('TestBundle:Product:index.html.twig', $templates[0]->getLogicalName());
-        $this->assertEquals('TestBundle:Admin:index.html.twig', $templates[1]->getLogicalName());
-        $this->assertEquals('PrezentCrudBundle:Crud:index.html.twig', $templates[2]->getLogicalName());
+        $this->assertEquals('@Test/product/index.html.twig', $templates[0]);
+        $this->assertEquals('@Test/admin/index.html.twig', $templates[1]);
+        $this->assertEquals('@PrezentCrud/crud/index.html.twig', $templates[2]);
     }
 }
