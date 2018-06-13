@@ -1,0 +1,4 @@
+app:
+    resource: '@AppBundle/Controller/ProductController.php'
+    type: annotation
+    prefix: /product

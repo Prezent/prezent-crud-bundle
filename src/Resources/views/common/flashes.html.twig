@@ -1,10 +1,12 @@
 {% trans_default_domain config.translationDomain %}
 
-{% for level, messages in app.session.flashbag.all %}
-    {% for message in messages %}
-        <div class="callout {{ level == 'error' ? 'alert' : level }}" data-closable>
-            {{ message|trans }}
-            <a class="close-button" data-close><i class="fa fa-times"></i></a>
-        </div>
+{% if app.session %}
+    {% for level, messages in app.session.flashbag.all %}
+        {% for message in messages %}
+            <div class="callout {{ level == 'error' ? 'alert' : level }}" data-closable>
+                {{ message|trans }}
+                <a class="close-button" data-close><i class="fa fa-times"></i></a>
+            </div>
+        {% endfor %}
     {% endfor %}
-{% endfor %}
+{% endif %}
