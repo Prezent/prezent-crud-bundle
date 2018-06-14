@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ProductController extends CrudController
 {
+    private static $configurator;
+
     /**
      * {@inheritDoc}
      */
@@ -24,5 +26,15 @@ class ProductController extends CrudController
             ->setFormType(ProductForm::class)
             ->setGridType(ProductGrid::class)
         ;
+
+        if (self::$configurator) {
+            $configurator = self::$configurator;
+            $configurator($config);
+        }
+    }
+
+    public static function setConfigurator($configurator)
+    {
+        self::$configurator = $configurator;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Prezent\CrudBundle\Tests\Functional;
 
+use Prezent\CrudBundle\Tests\Fixture\Functional\AppBundle\Controller\ProductController;
 use Prezent\CrudBundle\Tests\Fixture\Functional\AppFixtures;
 
 /**
@@ -15,6 +16,7 @@ class CrudControllerTest extends WebTestCase
     {
         $this->client = self::createClient();
         self::createDatabase($this->client);
+        ProductController::setConfigurator(null);
     }
 
     /**
