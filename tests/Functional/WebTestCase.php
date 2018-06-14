@@ -35,14 +35,8 @@ abstract class WebTestCase extends BaseWebTestCase
     protected static function createDatabase(Client $client)
     {
         $om = $client->getContainer()->get('doctrine.orm.default_entity_manager');
-
-        // Close and recreate database
-        $om->getConnection()->close();
-        unlink($client->getContainer()->getParameter('kernel.cache_dir') . '/sqlite.db');
-        $om->getConnection()->connect();
-
-        // Create schema
         $metadata = $om->getMetadataFactory()->getAllMetadata();
+
         $schemaTool = new SchemaTool($om);
         $schemaTool->dropSchema($metadata);
         $schemaTool->createSchema($metadata);
