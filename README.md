@@ -1,6 +1,8 @@
 prezent/crud-bundle
 ===================
 
+[![Build Status](https://travis-ci.org/Prezent/prezent-crud-bundle.svg?branch=master)](https://travis-ci.org/Prezent/prezent-crud-bundle)
+
 Easy CRUD for Symfony
 
 ```php
