@@ -12,7 +12,7 @@ class CrudControllerTest extends WebTestCase
 {
     private $client;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->client = self::createClient();
         self::createDatabase($this->client);

@@ -2,14 +2,14 @@
 
 namespace Prezent\CrudBundle\Tests\Fixture\Functional;
 
-use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Prezent\CrudBundle\Tests\Fixture\Functional\AppBundle\Entity\Product;
 
 /**
  * @author Sander Marechal
  */
-class AppFixtures extends Fixture
+class AppFixtures extends AbstractFixture
 {
     /**
      * @param int $num
