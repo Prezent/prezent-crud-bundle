@@ -20,4 +20,10 @@ final class CrudEvents
      * changes are flushed to the persistence layer.
      */
     const POST_FLUSH = 'prezent_crud.post_flush';
+
+    /**
+     * The VALIDATION_FAILED event occurs when a form is submitted but validation fails in
+     * the add and edit actions.
+     */
+    const VALIDATION_FAILED = 'prezent_crud.validation_failed';
 }

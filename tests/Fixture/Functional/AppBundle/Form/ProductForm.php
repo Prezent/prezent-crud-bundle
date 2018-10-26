@@ -19,6 +19,7 @@ class ProductForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('name', Type\TextType::class);
+        $builder->add('valid', Type\CheckboxType::class);
     }
 
     /**

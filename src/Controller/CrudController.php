@@ -12,6 +12,7 @@ use Prezent\CrudBundle\Event\CrudEvent;
 use Prezent\CrudBundle\Event\PostFlushEvent;
 use Prezent\CrudBundle\Event\PreFlushEvent;
 use Prezent\CrudBundle\Event\PreSubmitEvent;
+use Prezent\CrudBundle\Event\ValidationFailedEvent;
 use Prezent\CrudBundle\Model\Configuration;
 use Prezent\Grid\Grid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -113,37 +114,46 @@ abstract class CrudController extends Controller
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $object = $form->getData();
-            $om->persist($object);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $object = $form->getData();
+                $om->persist($object);
 
-            $event = new PreFlushEvent($configuration, $request, $object);
-            $dispatcher->dispatch(CrudEvents::PRE_FLUSH, $event);
+                $event = new PreFlushEvent($configuration, $request, $object);
+                $dispatcher->dispatch(CrudEvents::PRE_FLUSH, $event);
 
-            if ($event->hasResponse()) {
-                return $event->getResponse();
+                if ($event->hasResponse()) {
+                    return $event->getResponse();
+                }
+
+                $event = new PostFlushEvent($configuration, $request, $object);
+
+                try {
+                    $om->flush();
+                    $this->addFlash('success', sprintf('flash.%s.add.success', $configuration->getName()));
+                } catch (\Exception $e) {
+                    $event->setException($e);
+                    $this->addFlash('error', sprintf('flash.%s.add.error', $configuration->getName()));
+                }
+
+                $dispatcher->dispatch(CrudEvents::POST_FLUSH, $event);
+
+                if ($event->hasResponse()) {
+                    return $event->getResponse();
+                }
+
+                return $this->redirectToRoute(
+                    $configuration->getRoutePrefix() . 'index',
+                    $configuration->getRouteParameters()
+                );
+            } else {
+                $event = new ValidationFailedEvent($configuration, $request, $object, $form);
+                $dispatcher->dispatch(CrudEvents::VALIDATION_FAILED, $event);
+
+                if ($event->hasResponse()) {
+                    return $response;
+                }
             }
-
-            $event = new PostFlushEvent($configuration, $request, $object);
-
-            try {
-                $om->flush();
-                $this->addFlash('success', sprintf('flash.%s.add.success', $configuration->getName()));
-            } catch (\Exception $e) {
-                $event->setException($e);
-                $this->addFlash('error', sprintf('flash.%s.add.error', $configuration->getName()));
-            }
-
-            $dispatcher->dispatch(CrudEvents::POST_FLUSH, $event);
-
-            if ($event->hasResponse()) {
-                return $event->getResponse();
-            }
-
-            return $this->redirectToRoute(
-                $configuration->getRoutePrefix() . 'index',
-                $configuration->getRouteParameters()
-            );
         }
 
         return $this->render($this->getTemplate($request, 'add'), array_merge([
@@ -184,36 +194,45 @@ abstract class CrudController extends Controller
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $om->persist($object);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $om->persist($object);
 
-            $event = new PreFlushEvent($configuration, $request, $object);
-            $dispatcher->dispatch(CrudEvents::PRE_FLUSH, $event);
+                $event = new PreFlushEvent($configuration, $request, $object);
+                $dispatcher->dispatch(CrudEvents::PRE_FLUSH, $event);
 
-            if ($event->hasResponse()) {
-                return $event->getResponse();
+                if ($event->hasResponse()) {
+                    return $event->getResponse();
+                }
+
+                $event = new PostFlushEvent($configuration, $request, $object);
+
+                try {
+                    $om->flush();
+                    $this->addFlash('success', sprintf('flash.%s.edit.success', $configuration->getName()));
+                } catch (\Exception $e) {
+                    $event->setException($e);
+                    $this->addFlash('error', sprintf('flash.%s.edit.error', $configuration->getName()));
+                }
+
+                $dispatcher->dispatch(CrudEvents::POST_FLUSH, $event);
+
+                if ($event->hasResponse()) {
+                    return $event->getResponse();
+                }
+
+                return $this->redirectToRoute(
+                    $configuration->getRoutePrefix() . 'index',
+                    $configuration->getRouteParameters()
+                );
+            } else {
+                $event = new ValidationFailedEvent($configuration, $request, $object, $form);
+                $dispatcher->dispatch(CrudEvents::VALIDATION_FAILED, $event);
+
+                if ($event->hasResponse()) {
+                    return $response;
+                }
             }
-
-            $event = new PostFlushEvent($configuration, $request, $object);
-
-            try {
-                $om->flush();
-                $this->addFlash('success', sprintf('flash.%s.edit.success', $configuration->getName()));
-            } catch (\Exception $e) {
-                $event->setException($e);
-                $this->addFlash('error', sprintf('flash.%s.edit.error', $configuration->getName()));
-            }
-
-            $dispatcher->dispatch(CrudEvents::POST_FLUSH, $event);
-
-            if ($event->hasResponse()) {
-                return $event->getResponse();
-            }
-
-            return $this->redirectToRoute(
-                $configuration->getRoutePrefix() . 'index',
-                $configuration->getRouteParameters()
-            );
         }
 
         return $this->render($this->getTemplate($request, 'edit'), array_merge([

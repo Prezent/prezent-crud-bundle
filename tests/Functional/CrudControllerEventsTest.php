@@ -6,6 +6,7 @@ use Prezent\CrudBundle\CrudEvents;
 use Prezent\CrudBundle\Event\PostFlushEvent;
 use Prezent\CrudBundle\Event\PreFlushEvent;
 use Prezent\CrudBundle\Event\PreSubmitEvent;
+use Prezent\CrudBundle\Event\ValidationFailedEvent;
 use Prezent\CrudBundle\Tests\Fixture\Functional\AppBundle\Controller\ProductController;
 use Prezent\CrudBundle\Tests\Fixture\Functional\AppFixtures;
 
@@ -31,6 +32,7 @@ class CrudControllerEventsTest extends WebTestCase
                 ->addEventListener(CrudEvents::PRE_SUBMIT, $this->createListener(PreSubmitEvent::class, 1))
                 ->addEventListener(CrudEvents::PRE_FLUSH, $this->createListener(PreFlushEvent::class, 0))
                 ->addEventListener(CrudEvents::POST_FLUSH, $this->createListener(PostFlushEvent::class, 0))
+                ->addEventListener(CrudEvents::VALIDATION_FAILED, $this->createListener(ValidationFailedEvent::class, 0))
             ;
         });
 
@@ -38,6 +40,7 @@ class CrudControllerEventsTest extends WebTestCase
 
         $form = $crawler->selectButton('form.product.submit')->form();
         $form['product_form[name]'] = 'quu';
+        $form['product_form[valid]'] = '1';
 
         // Saving the form triggers all events
         ProductController::setConfigurator(function ($config) {
@@ -45,6 +48,7 @@ class CrudControllerEventsTest extends WebTestCase
                 ->addEventListener(CrudEvents::PRE_SUBMIT, $this->createListener(PreSubmitEvent::class, 1))
                 ->addEventListener(CrudEvents::PRE_FLUSH, $this->createListener(PreFlushEvent::class, 1))
                 ->addEventListener(CrudEvents::POST_FLUSH, $this->createListener(PostFlushEvent::class, 1))
+                ->addEventListener(CrudEvents::VALIDATION_FAILED, $this->createListener(ValidationFailedEvent::class, 0))
             ;
         });
 
@@ -63,6 +67,7 @@ class CrudControllerEventsTest extends WebTestCase
                 ->addEventListener(CrudEvents::PRE_SUBMIT, $this->createListener(PreSubmitEvent::class, 1))
                 ->addEventListener(CrudEvents::PRE_FLUSH, $this->createListener(PreFlushEvent::class, 0))
                 ->addEventListener(CrudEvents::POST_FLUSH, $this->createListener(PostFlushEvent::class, 0))
+                ->addEventListener(CrudEvents::VALIDATION_FAILED, $this->createListener(ValidationFailedEvent::class, 0))
             ;
         });
 
@@ -70,6 +75,7 @@ class CrudControllerEventsTest extends WebTestCase
 
         $form = $crawler->selectButton('form.product.submit')->form();
         $form['product_form[name]'] = 'quu';
+        $form['product_form[valid]'] = '1';
 
         // Saving the form triggers all events
         ProductController::setConfigurator(function ($config) {
@@ -77,6 +83,7 @@ class CrudControllerEventsTest extends WebTestCase
                 ->addEventListener(CrudEvents::PRE_SUBMIT, $this->createListener(PreSubmitEvent::class, 1))
                 ->addEventListener(CrudEvents::PRE_FLUSH, $this->createListener(PreFlushEvent::class, 1))
                 ->addEventListener(CrudEvents::POST_FLUSH, $this->createListener(PostFlushEvent::class, 1))
+                ->addEventListener(CrudEvents::VALIDATION_FAILED, $this->createListener(ValidationFailedEvent::class, 0))
             ;
         });
 
@@ -95,12 +102,57 @@ class CrudControllerEventsTest extends WebTestCase
                 ->addEventListener(CrudEvents::PRE_SUBMIT, $this->createListener(PreSubmitEvent::class, 0))
                 ->addEventListener(CrudEvents::PRE_FLUSH, $this->createListener(PreFlushEvent::class, 1))
                 ->addEventListener(CrudEvents::POST_FLUSH, $this->createListener(PostFlushEvent::class, 1))
+                ->addEventListener(CrudEvents::VALIDATION_FAILED, $this->createListener(ValidationFailedEvent::class, 0))
             ;
         });
 
         $crawler = $this->client->request('GET', '/product/delete/1');
 
         $this->assertTrue($this->client->getResponse()->isRedirect());
+    }
+
+    public function testAddValidationFailedEvent()
+    {
+        self::loadFixtures($this->client, new AppFixtures(1));
+        $crawler = $this->client->request('GET', '/product/add');
+
+        $form = $crawler->selectButton('form.product.submit')->form();
+        $form->remove('product_form[valid]');
+
+        ProductController::setConfigurator(function ($config) {
+            $config
+                ->addEventListener(CrudEvents::PRE_SUBMIT, $this->createListener(PreSubmitEvent::class, 1))
+                ->addEventListener(CrudEvents::PRE_FLUSH, $this->createListener(PreFlushEvent::class, 0))
+                ->addEventListener(CrudEvents::POST_FLUSH, $this->createListener(PostFlushEvent::class, 0))
+                ->addEventListener(CrudEvents::VALIDATION_FAILED, $this->createListener(ValidationFailedEvent::class, 1))
+            ;
+        });
+
+        $crawler = $this->client->submit($form);
+
+        $this->assertFalse($this->client->getResponse()->isRedirect());
+    }
+
+    public function testEditValidationFailedEvent()
+    {
+        self::loadFixtures($this->client, new AppFixtures(1));
+        $crawler = $this->client->request('GET', '/product/edit/1');
+
+        $form = $crawler->selectButton('form.product.submit')->form();
+        $form->remove('product_form[valid]');
+
+        ProductController::setConfigurator(function ($config) {
+            $config
+                ->addEventListener(CrudEvents::PRE_SUBMIT, $this->createListener(PreSubmitEvent::class, 1))
+                ->addEventListener(CrudEvents::PRE_FLUSH, $this->createListener(PreFlushEvent::class, 0))
+                ->addEventListener(CrudEvents::POST_FLUSH, $this->createListener(PostFlushEvent::class, 0))
+                ->addEventListener(CrudEvents::VALIDATION_FAILED, $this->createListener(ValidationFailedEvent::class, 1))
+            ;
+        });
+
+        $crawler = $this->client->submit($form);
+
+        $this->assertFalse($this->client->getResponse()->isRedirect());
     }
 
     private function createListener($eventClass, $count)

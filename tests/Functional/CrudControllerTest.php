@@ -79,6 +79,7 @@ class CrudControllerTest extends WebTestCase
 
         $form = $crawler->selectButton('form.product.submit')->form();
         $form['product_form[name]'] = 'quu';
+        $form['product_form[valid]'] = '1';
 
         $crawler = $this->client->submit($form);
 
@@ -100,6 +101,7 @@ class CrudControllerTest extends WebTestCase
         $this->assertEquals('product-1', $form['product_form[name]']->getValue());
 
         $form['product_form[name]'] = 'quu';
+        $form['product_form[valid]'] = '1';
         $crawler = $this->client->submit($form);
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
