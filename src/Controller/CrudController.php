@@ -60,7 +60,7 @@ abstract class CrudController extends Controller
         $queryBuilder = $this->getRepository()->createQueryBuilder('o');
 
         // If no specific entity alias is given, link the sort field to the main entity
-        if (!strpos($sortField, '.')) {
+        if (!strpos($sortField, '.') && !strpos($sortField, '_') === 0) {
             $sortField = sprintf('o.%s', $sortField);
         }
         $queryBuilder->addOrderBy($sortField, $sortOrder);
