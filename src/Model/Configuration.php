@@ -541,7 +541,7 @@ class Configuration
             throw new \RuntimeException('Unable to determine controller name');
         }
 
-        return strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', str_replace('Action', '', $match[1])));
+        return strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', preg_replace('/Action$/', '', $match[1])));
     }
 
     /**
