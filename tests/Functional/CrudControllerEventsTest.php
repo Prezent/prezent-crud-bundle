@@ -9,6 +9,7 @@ use Prezent\CrudBundle\Event\PreSubmitEvent;
 use Prezent\CrudBundle\Event\ValidationFailedEvent;
 use Prezent\CrudBundle\Tests\Fixture\Functional\AppBundle\Controller\ProductController;
 use Prezent\CrudBundle\Tests\Fixture\Functional\AppFixtures;
+use Prezent\CrudBundle\Tests\Fixture\InvokableListener;
 
 /**
  * @author Sander Marechal
@@ -17,7 +18,7 @@ class CrudControllerEventsTest extends WebTestCase
 {
     private $client;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->client = self::createClient();
         self::createDatabase($this->client);
@@ -157,7 +158,7 @@ class CrudControllerEventsTest extends WebTestCase
 
     private function createListener($eventClass, $count)
     {
-        $listener = $this->createPartialMock(\stdClass::class, ['__invoke']);
+        $listener = $this->createPartialMock(InvokableListener::class, ['__invoke']);
         $listener->expects($this->exactly($count))
             ->method('__invoke')
             ->with($this->isInstanceOf($eventClass));
