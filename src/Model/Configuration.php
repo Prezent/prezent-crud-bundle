@@ -537,11 +537,11 @@ class Configuration
      */
     private function getDefaultAction(Request $request)
     {
-        if (!preg_match('/(\w+)Action$/', $request->attributes->get('_controller'), $match)) {
+        if (!preg_match('/::(\w+)$/', $request->attributes->get('_controller'), $match)) {
             throw new \RuntimeException('Unable to determine controller name');
         }
 
-        return strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $match[1]));
+        return strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', str_replace('Action', '', $match[1])));
     }
 
     /**
