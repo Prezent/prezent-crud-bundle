@@ -508,6 +508,10 @@ class Configuration
         if (!$this->entityClass) {
             throw new \RuntimeException('You must set the entityClass on the CRUD configuration');
         }
+
+        if (!$this->name) {
+            throw new \RuntimeException('Default name could not be found. You must set the name on the CRUD configuration');
+        }
     }
 
     /**
@@ -519,7 +523,7 @@ class Configuration
     private function getDefaultName(Request $request)
     {
         if (!preg_match('/Bundle\\\\Controller\\\\([\w\\\\]+)Controller:/', $request->attributes->get('_controller'), $match)) {
-            throw new \RuntimeException('Unable to determine controller name');
+            return null;
         }
 
         return strtolower(str_replace('\\', '_', $match[1]));
