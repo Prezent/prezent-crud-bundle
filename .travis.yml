@@ -9,14 +9,8 @@ cache:
 
 matrix:
     include:
-        # Skip testing Symfony 2.8, the WebTest does not work
-        - php: 5.6
-          env: SYMFONY_LTS='^3'
-        - php: 7.0
-          env: SYMFONY_LTS='^3'
-        # Symfony 4
-        - php: 7.0
         - php: 7.1
+          env: SYMFONY_LTS='^3'
         - php: 7.2
 
 before_install:
