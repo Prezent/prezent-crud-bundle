@@ -5,8 +5,6 @@ framework:
     secret: test
     session:
         storage_id: session.storage.mock_file
-    templating:
-        engines: [twig]
     test: true
     translator:
         fallback: en
@@ -30,7 +28,3 @@ services:
         class: Prezent\CrudBundle\Tests\Fixture\Functional\AppBundle\Grid\ProductGrid
         tags:
             - { name: prezent_grid.grid }
-    twig.extension.text:
-        class: Twig_Extensions_Extension_Text
-        tags:
-            - { name: twig.extension }
