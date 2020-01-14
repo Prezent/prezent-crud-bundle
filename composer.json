@@ -1,6 +1,6 @@
 {
     "name": "prezent/crud-bundle",
-    "type": "library",
+    "type": "symfony-bundle",
     "description": "Easy CRUD for Symfony",
     "keywords": ["crud", "admin", "grid", "datagrid"],
     "homepage": "http://www.prezent.nl",
