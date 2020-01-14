@@ -19,10 +19,12 @@
                 {{ form_row(child) }}
             {% endfor %}
 
-            {% block crud_actions %}
-                <input type="submit" value="{{ ('form.' ~ config.name ~ '.submit')|trans({}, config.translationDomain) }}" />
-                <a class="button secondary" href="{{ path(config.routePrefix ~ 'index', config.routeParameters) }}">{{ ('form.' ~ config.name ~ '.cancel')|trans({}, config.translationDomain) }}</a>
-            {% endblock %}
+            <div class="button-group">
+                {% block crud_actions %}
+                    <input type="submit" class="button primary" value="{{ ('form.' ~ config.name ~ '.submit')|trans({}, config.translationDomain) }}" />
+                    <a class="button secondary" href="{{ path(config.routePrefix ~ 'index', config.routeParameters) }}">{{ ('form.' ~ config.name ~ '.cancel')|trans({}, config.translationDomain) }}</a>
+                {% endblock %}
+            </div>
         {{ form_end(form) }}
     {% endblock %}
 {% endblock %}

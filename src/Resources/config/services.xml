@@ -4,9 +4,20 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services
     http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
+        <defaults autowire="true" autoconfigure="true" public="false" />
 
-        <service id="prezent_crud.template_guesser" class="Prezent\CrudBundle\Templating\TemplateGuesser" public="true">
-            <argument type="service" id="kernel" />
+        <!-- Service prototypes -->
+
+        <prototype namespace="Prezent\CrudBundle\" resource="../../*" exclude="../../{Model,Event,Resources}"/>
+
+        <!-- Individual services -->
+
+        <service id="prezent_crud.pagerfanta.view" class="Pagerfanta\View\DefaultView">
+            <argument type="service" id="Prezent\CrudBundle\Pagerfanta\FoundationTemplate" />
+            <tag name="pagerfanta.view" alias="foundation" />
         </service>
+
+        <service id="prezent_crud.template_guesser" class="Prezent\CrudBundle\Templating\TemplateGuesser" public="true" />
+
     </services>
 </container>

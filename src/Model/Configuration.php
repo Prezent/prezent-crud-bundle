@@ -522,7 +522,7 @@ class Configuration
      */
     private function getDefaultName(Request $request)
     {
-        if (!preg_match('/Bundle\\\\Controller\\\\([\w\\\\]+)Controller:/', $request->attributes->get('_controller'), $match)) {
+        if (!preg_match('/Controller\\\\([\w\\\\]+)Controller:/', $request->attributes->get('_controller'), $match)) {
             return null;
         }
 

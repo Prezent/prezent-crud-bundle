@@ -49,7 +49,7 @@ class CrudControllerTest extends WebTestCase
         $this->assertCount(1, $crawler->filter('table.crud-grid'));
         $this->assertCount(3, $crawler->filter('table.crud-grid thead th'));
         $this->assertCount(3, $crawler->filter('table.crud-grid tbody tr'));
-        $this->assertCount(1, $crawler->filter('nav .current'));
+        $this->assertCount(1, $crawler->filter('ul.pagination .current'));
     }
 
     public function testSort()
@@ -61,7 +61,7 @@ class CrudControllerTest extends WebTestCase
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $this->assertCount(3, $crawler->filter('table.crud-grid tbody tr'));
-        $this->assertCount(1, $crawler->filter('nav .current'));
+        $this->assertCount(1, $crawler->filter('ul.pagination .current'));
 
         $this->assertEquals('3', trim($crawler->filter('tbody tr:nth-child(1) td')->first()->text()));
         $this->assertEquals('2', trim($crawler->filter('tbody tr:nth-child(2) td')->first()->text()));
@@ -133,7 +133,7 @@ class CrudControllerTest extends WebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $this->assertCount(10, $crawler->filter('table.crud-grid tbody tr'));
 
-        $crawler = $this->client->click($crawler->filter('a[rel="next"]')->link());
+        $crawler = $this->client->click($crawler->filter('li[class="pagination-next"] a')->link());
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $this->assertCount(5, $crawler->filter('table.crud-grid tbody tr'));
