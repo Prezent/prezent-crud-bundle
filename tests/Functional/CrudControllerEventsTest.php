@@ -10,6 +10,7 @@ use Prezent\CrudBundle\Event\ValidationFailedEvent;
 use Prezent\CrudBundle\Tests\Fixture\Functional\AppBundle\Controller\ProductController;
 use Prezent\CrudBundle\Tests\Fixture\Functional\AppFixtures;
 use Prezent\CrudBundle\Tests\Fixture\InvokableListener;
+use Symfony\Component\Form\FormError;
 
 /**
  * @author Sander Marechal
@@ -146,6 +147,28 @@ class CrudControllerEventsTest extends WebTestCase
             $config
                 ->addEventListener(CrudEvents::PRE_SUBMIT, $this->createListener(PreSubmitEvent::class, 1))
                 ->addEventListener(CrudEvents::PRE_FLUSH, $this->createListener(PreFlushEvent::class, 0))
+                ->addEventListener(CrudEvents::POST_FLUSH, $this->createListener(PostFlushEvent::class, 0))
+                ->addEventListener(CrudEvents::VALIDATION_FAILED, $this->createListener(ValidationFailedEvent::class, 1))
+            ;
+        });
+
+        $crawler = $this->client->submit($form);
+
+        $this->assertFalse($this->client->getResponse()->isRedirect());
+    }
+
+    public function testFormErrorsDuringPreFlushEvent()
+    {
+        self::loadFixtures($this->client, new AppFixtures(1));
+        $crawler = $this->client->request('GET', '/product/add');
+
+        $form = $crawler->selectButton('form.product.submit')->form();
+
+        ProductController::setConfigurator(function ($config) {
+            $config
+                ->addEventListener(CrudEvents::PRE_FLUSH, function (PreFlushEvent $event) {
+                    $event->getForm()->addError(new FormError('custom error'));
+                })
                 ->addEventListener(CrudEvents::POST_FLUSH, $this->createListener(PostFlushEvent::class, 0))
                 ->addEventListener(CrudEvents::VALIDATION_FAILED, $this->createListener(ValidationFailedEvent::class, 1))
             ;

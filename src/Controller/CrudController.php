@@ -125,7 +125,9 @@ abstract class CrudController extends Controller
                 if ($event->hasResponse()) {
                     return $event->getResponse();
                 }
+            }
 
+            if ($form->isValid()) { // Check again, the PreFlushEvent may have added errors
                 $event = new PostFlushEvent($configuration, $request, $object, $form);
 
                 try {
@@ -204,7 +206,9 @@ abstract class CrudController extends Controller
                 if ($event->hasResponse()) {
                     return $event->getResponse();
                 }
+            }
 
+            if ($form->isValid()) { // Check again, the PreFlushEvent may have added errors
                 $event = new PostFlushEvent($configuration, $request, $object, $form);
 
                 try {

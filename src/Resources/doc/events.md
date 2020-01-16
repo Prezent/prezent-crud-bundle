@@ -47,7 +47,8 @@ Only available on the `PostFlushEvent`. Returns the exception that occurred duri
 
 ### `getForm()`
 
-Returns the current form instance. Always `null` during a `delete` action.
+Returns the current form instance. Always `null` during a `delete` action. You can add errors to the form during the
+`PreFlushEvent` but not during the `PostFlushEvent`.
 
 ### `getObject()`
 
