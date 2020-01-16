@@ -33,7 +33,7 @@ class PostFlushEvent extends PreFlushEvent
     {
         return $this->exception;
     }
-    
+
     /**
      * Set exception
      *

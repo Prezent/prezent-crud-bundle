@@ -10,33 +10,6 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Sander Marechal
  */
-class PreFlushEvent extends CrudEvent
+class PreFlushEvent extends PreSubmitEvent
 {
-    /**
-     * @var object
-     */
-    private $object;
-
-    /**
-     * Constructor
-     *
-     * @param Configuration $configuration
-     * @param Request $request
-     */
-    public function __construct(Configuration $configuration, Request $request, $object)
-    {
-        parent::__construct($configuration, $request);
-
-        $this->object = $object;
-    }
-
-    /**
-     * Get object
-     *
-     * @return object
-     */
-    public function getObject()
-    {
-        return $this->object;
-    }
 }

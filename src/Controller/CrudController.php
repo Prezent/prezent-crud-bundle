@@ -119,14 +119,14 @@ abstract class CrudController extends Controller
                 $object = $form->getData();
                 $om->persist($object);
 
-                $event = new PreFlushEvent($configuration, $request, $object);
+                $event = new PreFlushEvent($configuration, $request, $object, $form);
                 $dispatcher->dispatch(CrudEvents::PRE_FLUSH, $event);
 
                 if ($event->hasResponse()) {
                     return $event->getResponse();
                 }
 
-                $event = new PostFlushEvent($configuration, $request, $object);
+                $event = new PostFlushEvent($configuration, $request, $object, $form);
 
                 try {
                     $om->flush();
@@ -198,14 +198,14 @@ abstract class CrudController extends Controller
             if ($form->isValid()) {
                 $om->persist($object);
 
-                $event = new PreFlushEvent($configuration, $request, $object);
+                $event = new PreFlushEvent($configuration, $request, $object, $form);
                 $dispatcher->dispatch(CrudEvents::PRE_FLUSH, $event);
 
                 if ($event->hasResponse()) {
                     return $event->getResponse();
                 }
 
-                $event = new PostFlushEvent($configuration, $request, $object);
+                $event = new PostFlushEvent($configuration, $request, $object, $form);
 
                 try {
                     $om->flush();

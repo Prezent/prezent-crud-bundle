@@ -29,7 +29,7 @@ class PreSubmitEvent extends CrudEvent
      * @param Configuration $configuration
      * @param Request $request
      */
-    public function __construct(Configuration $configuration, Request $request, $object, FormInterface $form)
+    public function __construct(Configuration $configuration, Request $request, $object, FormInterface $form = null)
     {
         parent::__construct($configuration, $request);
 
@@ -50,7 +50,7 @@ class PreSubmitEvent extends CrudEvent
     /**
      * Get form
      *
-     * @return FormInterface
+     * @return ?FormInterface
      */
     public function getForm()
     {

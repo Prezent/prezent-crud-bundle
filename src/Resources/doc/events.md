@@ -47,7 +47,7 @@ Only available on the `PostFlushEvent`. Returns the exception that occurred duri
 
 ### `getForm()`
 
-Only available on the `PreSubmitEvent`. Returns the current form instance.
+Returns the current form instance. Always `null` during a `delete` action.
 
 ### `getObject()`
 
