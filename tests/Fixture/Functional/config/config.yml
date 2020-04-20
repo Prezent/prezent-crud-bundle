@@ -18,13 +18,20 @@ doctrine:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
 
+monolog:
+    handlers:
+        test:
+            type: test
+
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
 
 services:
-    app.grid:
+    Prezent\CrudBundle\Tests\Fixture\Functional\AppBundle\Controller\ProductController:
+        tags:
+            - { name: controller.service_arguments }
+    Prezent\CrudBundle\Tests\Fixture\Functional\AppBundle\Grid\ProductGrid:
         public: true
-        class: Prezent\CrudBundle\Tests\Fixture\Functional\AppBundle\Grid\ProductGrid
         tags:
             - { name: prezent_grid.grid }

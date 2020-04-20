@@ -15,6 +15,7 @@ use Prezent\CrudBundle\Event\PreSubmitEvent;
 use Prezent\CrudBundle\Event\ValidationFailedEvent;
 use Prezent\CrudBundle\Model\Configuration;
 use Prezent\Grid\Grid;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -92,7 +93,7 @@ abstract class CrudController extends Controller
      * @param Request $request
      * @return RedirectResponse|Response
      */
-    public function addAction(Request $request)
+    public function addAction(Request $request, LoggerInterface $logger)
     {
         $configuration = $this->getConfiguration($request);
         $dispatcher = $configuration->getEventDispatcher();
@@ -135,6 +136,7 @@ abstract class CrudController extends Controller
                     $this->addFlash('success', sprintf('flash.%s.add.success', $configuration->getName()));
                 } catch (\Exception $e) {
                     $event->setException($e);
+                    $logger->error($e->getMessage(), ['exception' => $e]);
                     $this->addFlash('error', sprintf('flash.%s.add.error', $configuration->getName()));
                 }
 
@@ -174,7 +176,7 @@ abstract class CrudController extends Controller
      * @param $id
      * @return RedirectResponse|Response
      */
-    public function editAction(Request $request, $id)
+    public function editAction(Request $request, LoggerInterface $logger, $id)
     {
         $configuration = $this->getConfiguration($request);
         $dispatcher = $configuration->getEventDispatcher();
@@ -216,6 +218,7 @@ abstract class CrudController extends Controller
                     $this->addFlash('success', sprintf('flash.%s.edit.success', $configuration->getName()));
                 } catch (\Exception $e) {
                     $event->setException($e);
+                    $logger->error($e->getMessage(), ['exception' => $e]);
                     $this->addFlash('error', sprintf('flash.%s.edit.error', $configuration->getName()));
                 }
 
@@ -254,7 +257,7 @@ abstract class CrudController extends Controller
      * @param $id
      * @return RedirectResponse
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction(Request $request, LoggerInterface $logger, $id)
     {
         $configuration = $this->getConfiguration($request);
         $dispatcher = $configuration->getEventDispatcher();
@@ -276,6 +279,7 @@ abstract class CrudController extends Controller
             $this->addFlash('success', sprintf('flash.%s.delete.success', $configuration->getName()));
         } catch (\Exception $e) {
             $event->setException($e);
+            $logger->error($e->getMessage(), ['exception' => $e]);
             $this->addFlash('error', sprintf('flash.%s.delete.error', $configuration->getName()));
         }
 

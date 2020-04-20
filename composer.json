@@ -23,7 +23,8 @@
         "symfony/templating": "^3.0|^4.0",
         "symfony/twig-bundle": "^3.0|^4.0",
         "symfony/validator": "^3.0|^4.0",
-        "symfony/yaml": "^3.0|^4.0"
+        "symfony/yaml": "^3.0|^4.0",
+        "symfony/monolog-bundle": "^3.5"
     },
     "license": "MIT",
     "authors": [
