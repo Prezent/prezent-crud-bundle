@@ -40,7 +40,7 @@ abstract class CrudController extends Controller
      *
      * @Route("/")
      * @param Request $request
-     * @return RedirectResponse|Response
+     * @return Response
      */
     public function indexAction(Request $request)
     {
@@ -91,7 +91,7 @@ abstract class CrudController extends Controller
      *
      * @Route("/add")
      * @param Request $request
-     * @return RedirectResponse|Response
+     * @return Response
      */
     public function addAction(Request $request, LoggerInterface $logger)
     {
@@ -173,8 +173,8 @@ abstract class CrudController extends Controller
      *
      * @Route("/edit/{id}")
      * @param Request $request
-     * @param $id
-     * @return RedirectResponse|Response
+     * @param string $id
+     * @return Response
      */
     public function editAction(Request $request, LoggerInterface $logger, $id)
     {
@@ -254,8 +254,8 @@ abstract class CrudController extends Controller
      * Delete an object
      *
      * @Route("/delete/{id}")
-     * @param $id
-     * @return RedirectResponse
+     * @param string $id
+     * @return Response
      */
     public function deleteAction(Request $request, LoggerInterface $logger, $id)
     {
@@ -310,7 +310,6 @@ abstract class CrudController extends Controller
      * Get the configuration
      *
      * @param Request $request
-     * @return Configuration
      */
     protected function getConfiguration(Request $request = null)
     {
