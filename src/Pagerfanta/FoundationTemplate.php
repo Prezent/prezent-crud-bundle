@@ -3,7 +3,7 @@
 namespace Prezent\CrudBundle\Pagerfanta;
 
 use Pagerfanta\View\Template\Template;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FoundationTemplate extends Template
 {
