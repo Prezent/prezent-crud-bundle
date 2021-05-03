@@ -110,7 +110,7 @@ abstract class CrudController extends Controller
         $dispatcher->dispatch(CrudEvents::PRE_SUBMIT, $event);
 
         if ($event->hasResponse()) {
-            return $response;
+            return $event->getResponse();
         }
 
         $form->handleRequest($request);
@@ -155,7 +155,7 @@ abstract class CrudController extends Controller
                 $dispatcher->dispatch(CrudEvents::VALIDATION_FAILED, $event);
 
                 if ($event->hasResponse()) {
-                    return $response;
+                    return $event->getResponse();
                 }
             }
         }
@@ -237,7 +237,7 @@ abstract class CrudController extends Controller
                 $dispatcher->dispatch(CrudEvents::VALIDATION_FAILED, $event);
 
                 if ($event->hasResponse()) {
-                    return $response;
+                    return $event->getResponse();
                 }
             }
         }
