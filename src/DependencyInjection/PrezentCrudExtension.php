@@ -32,6 +32,6 @@ class PrezentCrudExtension extends Extension implements PrependExtensionInterfac
      */
     public function prepend(ContainerBuilder $container)
     {
-        $container->prependExtensionConfig('white_october_pagerfanta', ['default_view' => 'foundation']);
+        $container->prependExtensionConfig('babdev_pagerfanta', ['default_view' => 'foundation']);
     }
 }

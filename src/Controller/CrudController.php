@@ -14,10 +14,12 @@ use Prezent\CrudBundle\Event\PreFlushEvent;
 use Prezent\CrudBundle\Event\PreSubmitEvent;
 use Prezent\CrudBundle\Event\ValidationFailedEvent;
 use Prezent\CrudBundle\Model\Configuration;
+use Prezent\CrudBundle\Templating\TemplateGuesser;
 use Prezent\Grid\Grid;
+use Prezent\Grid\GridFactory;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,7 +30,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  *
  * @author Sander Marechal
  */
-abstract class CrudController extends Controller
+abstract class CrudController extends AbstractController
 {
     /**
      * @var Configuration
@@ -36,13 +38,27 @@ abstract class CrudController extends Controller
     private $configuration;
 
     /**
+     * @var TemplateGuesser
+     */
+    private $templateGuesser;
+
+    /**
+     * Constructor
+     *
+     * @param TemplateGuesser $templateGuesser
+     */
+    public function __construct(TemplateGuesser $templateGuesser)
+    {
+        $this->templateGuesser = $templateGuesser;
+    }
+
+    /**
      * List objects
      *
      * @Route("/")
-     * @param Request $request
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request, GridFactory $gridFactory)
     {
         $configuration = $this->getConfiguration($request);
 
@@ -73,7 +89,7 @@ abstract class CrudController extends Controller
         $pager->setCurrentPage($request->get('page', 1));
 
         /** @var Grid $grid */
-        $grid = $this->get('grid_factory')->createGrid(
+        $grid = $gridFactory->createGrid(
             $configuration->getGridType(),
             $configuration->getGridOptions()
         );
@@ -107,7 +123,7 @@ abstract class CrudController extends Controller
         $form = $this->createForm($configuration->getFormType(), $object, $configuration->getFormOptions());
 
         $event = new PreSubmitEvent($configuration, $request, $object, $form);
-        $dispatcher->dispatch(CrudEvents::PRE_SUBMIT, $event);
+        $dispatcher->dispatch($event, CrudEvents::PRE_SUBMIT);
 
         if ($event->hasResponse()) {
             return $event->getResponse();
@@ -121,7 +137,7 @@ abstract class CrudController extends Controller
                 $om->persist($object);
 
                 $event = new PreFlushEvent($configuration, $request, $object, $form);
-                $dispatcher->dispatch(CrudEvents::PRE_FLUSH, $event);
+                $dispatcher->dispatch($event, CrudEvents::PRE_FLUSH);
 
                 if ($event->hasResponse()) {
                     return $event->getResponse();
@@ -140,7 +156,7 @@ abstract class CrudController extends Controller
                     $this->addFlash('error', sprintf('flash.%s.add.error', $configuration->getName()));
                 }
 
-                $dispatcher->dispatch(CrudEvents::POST_FLUSH, $event);
+                $dispatcher->dispatch($event, CrudEvents::POST_FLUSH);
 
                 if ($event->hasResponse()) {
                     return $event->getResponse();
@@ -152,7 +168,7 @@ abstract class CrudController extends Controller
                 );
             } else {
                 $event = new ValidationFailedEvent($configuration, $request, $object, $form);
-                $dispatcher->dispatch(CrudEvents::VALIDATION_FAILED, $event);
+                $dispatcher->dispatch($event, CrudEvents::VALIDATION_FAILED);
 
                 if ($event->hasResponse()) {
                     return $event->getResponse();
@@ -190,7 +206,7 @@ abstract class CrudController extends Controller
         $form = $this->createForm($configuration->getFormType(), $object, $configuration->getFormOptions());
 
         $event = new PreSubmitEvent($configuration, $request, $object, $form);
-        $dispatcher->dispatch(CrudEvents::PRE_SUBMIT, $event);
+        $dispatcher->dispatch($event, CrudEvents::PRE_SUBMIT);
 
         if ($event->hasResponse()) {
             return $event->getResponse();
@@ -203,7 +219,7 @@ abstract class CrudController extends Controller
                 $om->persist($object);
 
                 $event = new PreFlushEvent($configuration, $request, $object, $form);
-                $dispatcher->dispatch(CrudEvents::PRE_FLUSH, $event);
+                $dispatcher->dispatch($event, CrudEvents::PRE_FLUSH);
 
                 if ($event->hasResponse()) {
                     return $event->getResponse();
@@ -222,7 +238,7 @@ abstract class CrudController extends Controller
                     $this->addFlash('error', sprintf('flash.%s.edit.error', $configuration->getName()));
                 }
 
-                $dispatcher->dispatch(CrudEvents::POST_FLUSH, $event);
+                $dispatcher->dispatch($event, CrudEvents::POST_FLUSH);
 
                 if ($event->hasResponse()) {
                     return $event->getResponse();
@@ -234,7 +250,7 @@ abstract class CrudController extends Controller
                 );
             } else {
                 $event = new ValidationFailedEvent($configuration, $request, $object, $form);
-                $dispatcher->dispatch(CrudEvents::VALIDATION_FAILED, $event);
+                $dispatcher->dispatch($event, CrudEvents::VALIDATION_FAILED);
 
                 if ($event->hasResponse()) {
                     return $event->getResponse();
@@ -264,7 +280,7 @@ abstract class CrudController extends Controller
         $object = $this->findObject($request, $id);
 
         $event = new PreFlushEvent($configuration, $request, $object);
-        $dispatcher->dispatch(CrudEvents::PRE_FLUSH, $event);
+        $dispatcher->dispatch($event, CrudEvents::PRE_FLUSH);
 
         if ($event->hasResponse()) {
             return $event->getResponse();
@@ -283,7 +299,7 @@ abstract class CrudController extends Controller
             $this->addFlash('error', sprintf('flash.%s.delete.error', $configuration->getName()));
         }
 
-        $dispatcher->dispatch(CrudEvents::POST_FLUSH, $event);
+        $dispatcher->dispatch($event, CrudEvents::POST_FLUSH);
 
         if ($event->hasResponse()) {
             return $event->getResponse();
@@ -377,7 +393,7 @@ abstract class CrudController extends Controller
      */
     protected function getTemplate(Request $request, $action)
     {
-        $templates = $this->get('prezent_crud.template_guesser')->guessTemplateNames([$this, $action], $request);
+        $templates = $this->templateGuesser->guessTemplateNames([$this, $action], $request);
 
         foreach ($templates as $template) {
             if ($this->get('twig')->getLoader()->exists($template)) {

@@ -6,7 +6,7 @@ It is based on several other bundles:
 
 * [doctrine/doctrine-bundle](https://github.com/doctrine/DoctrineBundle) for persistence
 * [prezent/grid-bundle](https://github.com/Prezent/prezent-grid-bundle) for lists/grids
-* [white-october/pagerfanta-bundle](https://github.com/whiteoctober/WhiteOctoberPagerfantaBundle) for pagination
+* [babdev/pagerfanta-bundle](https://github.com/BabDev/PagerfantaBundle) for pagination
 * [zurb/foundation-sites](https://github.com/zurb/foundation-sites) as CSS framework
 
 
@@ -41,7 +41,7 @@ public function registerBundles()
 {
     $bundles = array(
         // Assuming a Symfony standard edition, just add these bundles
-        new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
+        new BabDev\PagerfantaBundle\BabDevPagerfantaBundle(),
         new Prezent\GridBundle\PrezentGridBundle(),
         new Prezent\CrudBundle\PrezentCrudBundle(),
     );

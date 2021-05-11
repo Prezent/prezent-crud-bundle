@@ -3,9 +3,9 @@
 namespace Prezent\CrudBundle\Event;
 
 use Prezent\CrudBundle\Model\Configuration;
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Base event class
@@ -90,7 +90,7 @@ class CrudEvent extends Event
     {
         return $this->response;
     }
-    
+
     /**
      * Set response
      *

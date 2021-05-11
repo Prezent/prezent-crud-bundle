@@ -26,7 +26,7 @@ class AppKernel extends Kernel
             new \Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new \Symfony\Bundle\MonologBundle\MonologBundle(),
             new \Symfony\Bundle\TwigBundle\TwigBundle(),
-            new \WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
+            new \BabDev\PagerfantaBundle\BabDevPagerfantaBundle(),
             new \Prezent\GridBundle\PrezentGridBundle(),
             new \Prezent\CrudBundle\PrezentCrudBundle(),
             new \Prezent\CrudBundle\Tests\Fixture\Functional\AppBundle\AppBundle(),
