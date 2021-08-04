@@ -7,7 +7,6 @@
     "require": {
         "php": "^7.0|^8.0",
         "prezent/grid-bundle": "^0.5.0",
-        "sensio/framework-extra-bundle": "^5.0",
         "symfony/framework-bundle": "^4.0|^5.0",
         "babdev/pagerfanta-bundle": "^2.0"
     },

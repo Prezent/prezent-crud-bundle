@@ -1,10 +1,11 @@
 framework:
     default_locale: en
     router:
-        resource: "%kernel.root_dir%/config/routing.yml"
+        utf8: true
+        resource: "%kernel.project_dir%/tests/Fixture/Functional/config/routing.yml"
     secret: test
     session:
-        storage_id: session.storage.mock_file
+        storage_factory_id: session.storage.factory.mock_file
     test: true
     translator:
         fallback: en
@@ -28,6 +29,10 @@ twig:
     strict_variables: '%kernel.debug%'
 
 services:
+    _defaults:
+        autoconfigure: true
+        autowire: true
+
     Prezent\CrudBundle\Tests\Fixture\Functional\AppBundle\Controller\ProductController:
         tags:
             - { name: controller.service_arguments }

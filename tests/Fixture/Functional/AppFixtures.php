@@ -3,7 +3,7 @@
 namespace Prezent\CrudBundle\Tests\Fixture\Functional;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Prezent\CrudBundle\Tests\Fixture\Functional\AppBundle\Entity\Product;
 
 /**

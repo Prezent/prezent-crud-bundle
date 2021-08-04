@@ -2,6 +2,7 @@
 
 namespace Prezent\CrudBundle\Templating;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -71,7 +72,7 @@ class TemplateGuesser
         do {
             $controller[0] = $reflClass->getName();
 
-            if ($template = $this->guessTemplateName($controller, $request)) {
+            if ($controller[0] !== AbstractController::class && $template = $this->guessTemplateName($controller, $request)) {
                 $templates[] = $template;
             }
 

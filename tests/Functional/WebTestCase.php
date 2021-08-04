@@ -4,10 +4,10 @@ namespace Prezent\CrudBundle\Tests\Functional;
 
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\SchemaTool;
+use Doctrine\Persistence\ObjectManager;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
-use Symfony\Component\BrowserKit\Client;
 
 /**
  * @author Sander Marechal
@@ -32,7 +32,7 @@ abstract class WebTestCase extends BaseWebTestCase
         return parent::createClient($options, $server);
     }
 
-    protected static function createDatabase(Client $client)
+    protected static function createDatabase(KernelBrowser $client)
     {
         $om = $client->getContainer()->get('doctrine.orm.default_entity_manager');
         $metadata = $om->getMetadataFactory()->getAllMetadata();
@@ -42,7 +42,7 @@ abstract class WebTestCase extends BaseWebTestCase
         $schemaTool->createSchema($metadata);
     }
 
-    protected static function loadFixtures(Client $client, $fixtures)
+    protected static function loadFixtures(KernelBrowser $client, $fixtures)
     {
         if (!is_array($fixtures)) {
             $fixtures = [$fixtures];

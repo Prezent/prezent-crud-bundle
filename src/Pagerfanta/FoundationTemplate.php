@@ -43,7 +43,7 @@ class FoundationTemplate extends Template
         return $this->pageWithText($page, $text);
     }
 
-    public function pageWithText($page, $text)
+    public function pageWithText($page, $text, ?string $rel = null)
     {
         $class = null;
 

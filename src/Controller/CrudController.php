@@ -2,10 +2,10 @@
 
 namespace Prezent\CrudBundle\Controller;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\QueryBuilder;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectRepository;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Prezent\CrudBundle\CrudEvents;
 use Prezent\CrudBundle\Event\CrudEvent;
@@ -18,12 +18,12 @@ use Prezent\CrudBundle\Templating\TemplateGuesser;
 use Prezent\Grid\Grid;
 use Prezent\Grid\GridFactory;
 use Psr\Log\LoggerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Base crud controller
@@ -84,7 +84,7 @@ abstract class CrudController extends AbstractController
 
         $this->configureListCriteria($request, $queryBuilder);
 
-        $pager = new Pagerfanta(new DoctrineORMAdapter($queryBuilder));
+        $pager = new Pagerfanta(new QueryAdapter($queryBuilder));
         $pager->setMaxPerPage($request->get('resultsPerPage', $configuration->getResultsPerPage()));
         $pager->setCurrentPage($request->get('page', 1));
 
