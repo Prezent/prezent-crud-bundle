@@ -5,7 +5,7 @@
     "keywords": ["crud", "admin", "grid", "datagrid"],
     "homepage": "http://www.prezent.nl",
     "require": {
-        "php": "^7.0",
+        "php": "^7.0|^8.0",
         "prezent/grid-bundle": "^0.5.0",
         "sensio/framework-extra-bundle": "^5.0",
         "symfony/framework-bundle": "^4.0|^5.0",
