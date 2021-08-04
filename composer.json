@@ -6,9 +6,12 @@
     "homepage": "http://www.prezent.nl",
     "require": {
         "php": "^7.0|^8.0",
+        "babdev/pagerfanta-bundle": "^3.0",
+        "pagerfanta/core": "^3.1",
+        "pagerfanta/doctrine-orm-adapter": "^3.1",
+        "pagerfanta/twig": "^3.1",
         "prezent/grid-bundle": "^0.5.0",
-        "symfony/framework-bundle": "^4.0|^5.0",
-        "babdev/pagerfanta-bundle": "^2.0"
+        "symfony/framework-bundle": "^4.0|^5.0"
     },
     "require-dev": {
         "doctrine/doctrine-bundle": "^1.5.2|^2.0",
