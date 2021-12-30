@@ -8,13 +8,14 @@ use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * @author Sander Marechal
  */
 abstract class WebTestCase extends BaseWebTestCase
 {
-    protected static function createKernel(array $options = [])
+    protected static function createKernel(array $options = []): KernelInterface
     {
         $class = self::getKernelClass();
 
@@ -25,7 +26,7 @@ abstract class WebTestCase extends BaseWebTestCase
         return new $class($options['test_case'], 'test', true);
     }
 
-    protected static function createClient(array $options = [], array $server = [])
+    protected static function createClient(array $options = [], array $server = []): KernelBrowser
     {
         $options['test_case'] = substr(strrchr(static::class, '\\'), 1);
 

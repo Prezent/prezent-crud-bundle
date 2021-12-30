@@ -3,6 +3,7 @@
 namespace Prezent\CrudBundle\Controller;
 
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
@@ -38,6 +39,11 @@ abstract class CrudController extends AbstractController
     private $configuration;
 
     /**
+     * @var ManagerRegistry
+     */
+    private $doctrine;
+
+    /**
      * @var TemplateGuesser
      */
     private $templateGuesser;
@@ -47,8 +53,9 @@ abstract class CrudController extends AbstractController
      *
      * @param TemplateGuesser $templateGuesser
      */
-    public function __construct(TemplateGuesser $templateGuesser)
+    public function __construct(ManagerRegistry $doctrine, TemplateGuesser $templateGuesser)
     {
+        $this->doctrine = $doctrine;
         $this->templateGuesser = $templateGuesser;
     }
 
@@ -396,7 +403,7 @@ abstract class CrudController extends AbstractController
         $templates = $this->templateGuesser->guessTemplateNames([$this, $action], $request);
 
         foreach ($templates as $template) {
-            if ($this->get('twig')->getLoader()->exists($template)) {
+            if ($this->container->get('twig')->getLoader()->exists($template)) {
                 return $template;
             }
         }
@@ -412,7 +419,7 @@ abstract class CrudController extends AbstractController
      */
     protected function getObjectManager($class = null)
     {
-        return $this->getDoctrine()->getManagerForClass($class ?: $this->getConfiguration()->getEntityClass());
+        return $this->doctrine->getManagerForClass($class ?: $this->getConfiguration()->getEntityClass());
     }
 
     /**

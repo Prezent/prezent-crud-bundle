@@ -1,5 +1,7 @@
 framework:
     default_locale: en
+    form:
+        enabled: true
     router:
         utf8: true
         resource: "%kernel.project_dir%/tests/Fixture/Functional/config/routing.yml"
@@ -9,6 +11,11 @@ framework:
     test: true
     translator:
         fallback: en
+    validation:
+        enabled: true
+        enable_annotations: true
+    annotations:
+        enabled: true
 
 doctrine:
     dbal:
