@@ -6,7 +6,7 @@
     {% block crud_grid %}
 
         {% if config.gridTheme %}
-            {% grid_theme grid config.gridTheme %}
+            {% grid_theme grid with config.gridTheme %}
         {% endif %}
 
         {{ grid(grid, pager, {'attr': {'class': 'crud-grid'}}) }}
