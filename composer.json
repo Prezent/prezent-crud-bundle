@@ -3,14 +3,14 @@
     "type": "symfony-bundle",
     "description": "Easy CRUD for Symfony",
     "keywords": ["crud", "admin", "grid", "datagrid"],
-    "homepage": "http://www.prezent.nl",
+    "homepage": "https://www.prezent.nl",
     "require": {
-        "php": "^7.0|^8.0",
+        "php": "^7.4|^8.0",
         "babdev/pagerfanta-bundle": "^3.0",
         "pagerfanta/core": "^3.1",
         "pagerfanta/doctrine-orm-adapter": "^3.1",
         "pagerfanta/twig": "^3.1",
-        "prezent/grid-bundle": "^0.6.0",
+        "prezent/grid-bundle": "^0.8.0",
         "symfony/form": "^5.0|^6.0",
         "symfony/framework-bundle": "^5.0|^6.0",
         "symfony/validator": "^5.0|^6.0"

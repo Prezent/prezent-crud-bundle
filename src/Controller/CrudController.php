@@ -33,10 +33,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 abstract class CrudController extends AbstractController
 {
-    /**
-     * @var Configuration
-     */
-    private $configuration;
+    private ?Configuration $configuration;
 
     /**
      * @var ManagerRegistry
@@ -322,7 +319,7 @@ abstract class CrudController extends AbstractController
      * Set the configuration
      *
      * @param Request $request
-     * @param Configuration $config
+     * @param Configuration $configuration
      * @return void
      */
     protected function configure(Request $request, Configuration $configuration)
@@ -331,10 +328,8 @@ abstract class CrudController extends AbstractController
 
     /**
      * Get the configuration
-     *
-     * @param Request $request
      */
-    protected function getConfiguration(Request $request = null)
+    protected function getConfiguration(?Request $request = null): Configuration
     {
         if (!$this->configuration) {
             if (!$request) {
