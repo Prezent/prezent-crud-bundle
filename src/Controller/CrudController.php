@@ -33,7 +33,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 abstract class CrudController extends AbstractController
 {
-    private ?Configuration $configuration;
+    private ?Configuration $configuration = null;
 
     /**
      * @var ManagerRegistry
