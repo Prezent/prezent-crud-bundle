@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Prezent\CrudBundle\Controller;
 
 use Doctrine\ORM\QueryBuilder;
@@ -9,7 +11,6 @@ use Doctrine\Persistence\ObjectRepository;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Prezent\CrudBundle\CrudEvents;
-use Prezent\CrudBundle\Event\CrudEvent;
 use Prezent\CrudBundle\Event\PostFlushEvent;
 use Prezent\CrudBundle\Event\PreFlushEvent;
 use Prezent\CrudBundle\Event\PreSubmitEvent;
@@ -19,12 +20,11 @@ use Prezent\CrudBundle\Templating\TemplateGuesser;
 use Prezent\Grid\Grid;
 use Prezent\Grid\GridFactory;
 use Psr\Log\LoggerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 /**
  * Base crud controller
@@ -35,34 +35,18 @@ abstract class CrudController extends AbstractController
 {
     private ?Configuration $configuration = null;
 
-    /**
-     * @var ManagerRegistry
-     */
-    private $doctrine;
-
-    /**
-     * @var TemplateGuesser
-     */
-    private $templateGuesser;
-
-    /**
-     * Constructor
-     *
-     * @param TemplateGuesser $templateGuesser
-     */
-    public function __construct(ManagerRegistry $doctrine, TemplateGuesser $templateGuesser)
-    {
-        $this->doctrine = $doctrine;
-        $this->templateGuesser = $templateGuesser;
+    public function __construct(
+        private readonly ManagerRegistry $doctrine,
+        private readonly TemplateGuesser $templateGuesser,
+        private readonly TwigInterface $twig
+    ) {
     }
 
     /**
      * List objects
-     *
-     * @Route("/")
-     * @return Response
      */
-    public function indexAction(Request $request, GridFactory $gridFactory)
+    #[Route("/")]
+    public function indexAction(Request $request, GridFactory $gridFactory): Response
     {
         $configuration = $this->getConfiguration($request);
 
@@ -108,12 +92,9 @@ abstract class CrudController extends AbstractController
 
     /**
      * Add a new object
-     *
-     * @Route("/add")
-     * @param Request $request
-     * @return Response
      */
-    public function addAction(Request $request, LoggerInterface $logger)
+    #[Route("/add")]
+    public function addAction(Request $request, LoggerInterface $logger): Response
     {
         $configuration = $this->getConfiguration($request);
         $dispatcher = $configuration->getEventDispatcher();
@@ -190,13 +171,9 @@ abstract class CrudController extends AbstractController
 
     /**
      * Edit an object
-     *
-     * @Route("/edit/{id}")
-     * @param Request $request
-     * @param string $id
-     * @return Response
      */
-    public function editAction(Request $request, LoggerInterface $logger, $id)
+    #[Route("/edit/{id}")]
+    public function editAction(Request $request, LoggerInterface $logger, string $id): Response
     {
         $configuration = $this->getConfiguration($request);
         $dispatcher = $configuration->getEventDispatcher();
@@ -272,12 +249,9 @@ abstract class CrudController extends AbstractController
 
     /**
      * Delete an object
-     *
-     * @Route("/delete/{id}")
-     * @param string $id
-     * @return Response
      */
-    public function deleteAction(Request $request, LoggerInterface $logger, $id)
+    #[Route("/delete/{id}")]
+    public function deleteAction(Request $request, LoggerInterface $logger, string $id): Response
     {
         $configuration = $this->getConfiguration($request);
         $dispatcher = $configuration->getEventDispatcher();
@@ -317,12 +291,8 @@ abstract class CrudController extends AbstractController
 
     /**
      * Set the configuration
-     *
-     * @param Request $request
-     * @param Configuration $configuration
-     * @return void
      */
-    protected function configure(Request $request, Configuration $configuration)
+    protected function configure(Request $request, Configuration $configuration): void
     {
     }
 
@@ -346,11 +316,8 @@ abstract class CrudController extends AbstractController
 
     /**
      * Generate new entity instance
-     *
-     * @param Request $request
-     * @return object
      */
-    protected function newInstance(Request $request)
+    protected function newInstance(Request $request): ?object
     {
         return null;
     }
@@ -358,11 +325,9 @@ abstract class CrudController extends AbstractController
     /**
      * Find an object by ID
      *
-     * @param mixed $id
-     * @return object
      * @throws NotFoundHttpException
      */
-    protected function findObject(Request $request, $id)
+    protected function findObject(Request $request, string|int $id): object
     {
         $configuration = $this->getConfiguration($request);
 
@@ -377,28 +342,20 @@ abstract class CrudController extends AbstractController
 
     /**
      * Configure list criteria
-     *
-     * @param Request $request
-     * @param QueryBuilder $queryBuilder
-     * @return void
      */
-    protected function configureListCriteria(Request $request, QueryBuilder $queryBuilder)
+    protected function configureListCriteria(Request $request, QueryBuilder $queryBuilder): void
     {
     }
 
     /**
      * Get the template for an action
-     *
-     * @param Request $request
-     * @param string $action
-     * @return string
      */
-    protected function getTemplate(Request $request, $action)
+    protected function getTemplate(Request $request, string $action): string
     {
         $templates = $this->templateGuesser->guessTemplateNames([$this, $action], $request);
 
         foreach ($templates as $template) {
-            if ($this->container->get('twig')->getLoader()->exists($template)) {
+            if ($this->twig->getLoader()->exists($template)) {
                 return $template;
             }
         }
