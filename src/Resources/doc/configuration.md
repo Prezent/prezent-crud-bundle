@@ -70,7 +70,7 @@ have `"long_action"` as an action. Use this setting to override the action name.
 
 The route prefix to use. This is the part of the route name without the action. This is automatically
 determined from the `_route` parameter of the request, see also the
-[Symfony @Route documentation](http://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/annotations/routing.html#route-name).
+[Symfony Route documentation](https://symfony.com/doc/current/routing.html#getting-the-route-name-and-parametersl).
 A controller class of `Vendor\AppBundle\ProductController` would have a prefix of `"vendor_app_product_"`.
 
 ### `setRouteParameters(array $routeParameters)`
