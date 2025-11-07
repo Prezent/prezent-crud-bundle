@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Prezent\CrudBundle\Model;
 
-use Prezent\CrudBundle\Controller\CrudController;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -15,96 +16,40 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class Configuration
 {
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
-    /**
-     * @var string
-     */
-    private $action;
+    private string $action;
 
-    /**
-     * @var string
-     */
-    private $routePrefix;
+    private string $routePrefix;
 
-    /**
-     * @var array
-     */
-    private $routeParameters = [];
+    private array $routeParameters = [];
 
-    /**
-     * @var string
-     */
-    private $entityClass;
+    private string $entityClass;
 
-    /**
-     * @var string
-     */
-    private $gridType;
+    private string $gridType;
 
-    /**
-     * @var string|array
-     */
-    private $gridTheme;
+    private string|array $gridTheme;
 
-    /**
-     * @var array
-     */
-    private $gridOptions = [];
+    private array $gridOptions = [];
 
-    /**
-     * @var string
-     */
-    private $formType;
+    private string $formType;
 
-    /**
-     * @var string|array
-     */
-    private $formTheme;
+    private string|array $formTheme;
 
-    /**
-     * @var array
-     */
-    private $formOptions = [];
+    private array $formOptions = [];
 
-    /**
-     * @var string
-     */
-    private $defaultSortField = 'id';
+    private string $defaultSortField = 'id';
 
-    /**
-     * @var string
-     */
-    private $defaultSortOrder = 'ASC';
+    private string $defaultSortOrder = 'ASC';
+    
+    private string $translationDomain = 'messages';
 
-    /**
-     * @var string
-     */
-    private $translationDomain = 'messages';
+    private array $templateVariables = [];
 
-    /**
-     * @var array
-     */
-    private $templateVariables = [];
+    private int $resultsPerPage = 10;
 
-    /**
-     * @var int
-     */
-    private $resultsPerPage = 10;
+    private EventDispatcherInterface $dispatcher;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $dispatcher;
-
-    /**
-     * Constructor
-     *
-     * @param Request $request
-     */
     public function __construct(Request $request)
     {
         $this->name = $this->getDefaultName($request);
@@ -113,386 +58,194 @@ class Configuration
         $this->dispatcher = new EventDispatcher();
     }
 
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return self
-     */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->name = $name;
         return $this;
     }
 
-    /**
-     * Get action
-     *
-     * @return string
-     */
-    public function getAction()
+    public function getAction(): string
     {
         return $this->action;
     }
 
-    /**
-     * Set action
-     *
-     * @param string $action
-     * @return self
-     */
-    public function setAction($action)
+    public function setAction(string $action): self
     {
         $this->action = $action;
         return $this;
     }
 
-    /**
-     * Get routePrefix
-     *
-     * @return string
-     */
-    public function getRoutePrefix()
+    public function getRoutePrefix(): string
     {
         return $this->routePrefix;
     }
 
-    /**
-     * Set routePrefix
-     *
-     * @param string $routePrefix
-     * @return self
-     */
-    public function setRoutePrefix($routePrefix)
+    public function setRoutePrefix(string $routePrefix): self
     {
         $this->routePrefix = $routePrefix;
         return $this;
     }
 
-    /**
-     * Get routeParameters
-     *
-     * @return array
-     */
-    public function getRouteParameters()
+    public function getRouteParameters(): array
     {
         return $this->routeParameters;
     }
 
-    /**
-     * Set routeParameters
-     *
-     * @param array $routeParameters
-     * @return self
-     */
-    public function setRouteParameters(array $routeParameters)
+    public function setRouteParameters(array $routeParameters): self
     {
         $this->routeParameters = $routeParameters;
         return $this;
     }
 
-    /**
-     * Getter for class
-     *
-     * @return string
-     */
-    public function getEntityClass()
+    public function getEntityClass(): string
     {
         return $this->entityClass;
     }
 
-    /**
-     * Set entityClass
-     *
-     * @param string $entityClass
-     * @return self
-     */
-    public function setEntityClass($entityClass)
+    public function setEntityClass(string $entityClass): self
     {
         $this->entityClass = $entityClass;
         return $this;
     }
 
-    /**
-     * Get gridType
-     *
-     * @return string
-     */
-    public function getGridType()
+    public function getGridType(): string
     {
         return $this->gridType;
     }
 
-    /**
-     * Set gridType
-     *
-     * @param string $gridType
-     * @return self
-     */
-    public function setGridType($gridType)
+    public function setGridType(string $gridType): self
     {
         $this->gridType = $gridType;
         return $this;
     }
 
-    /**
-     * Get gridTheme
-     *
-     * @return string|array
-     */
-    public function getGridTheme()
+    public function getGridTheme(): string|array
     {
         return $this->gridTheme;
     }
 
-    /**
-     * Set gridTheme
-     *
-     * @param string|array $gridTheme
-     * @return self
-     */
-    public function setGridTheme($gridTheme)
+    public function setGridTheme(string|array $gridTheme): self
     {
         $this->gridTheme = $gridTheme;
         return $this;
     }
 
-    /**
-     * Getter for gridOptions
-     *
-     * @return array
-     */
-    public function getGridOptions()
+    public function getGridOptions(): array
     {
         return $this->gridOptions;
     }
 
-    /**
-     * Setter for gridOptions
-     *
-     * @param array $gridOptions
-     * @return self
-     */
-    public function setGridOptions(array $gridOptions)
+    public function setGridOptions(array $gridOptions): self
     {
         $this->gridOptions = $gridOptions;
         return $this;
     }
 
-    /**
-     * Get formType
-     *
-     * @return string
-     */
-    public function getFormType()
+    public function getFormType(): string
     {
         return $this->formType;
     }
 
-    /**
-     * Set formType
-     *
-     * @param string $formType
-     * @return self
-     */
-    public function setFormType($formType)
+    public function setFormType(string $formType): self
     {
         $this->formType = $formType;
         return $this;
     }
 
-    /**
-     * Getter for formTheme
-     *
-     * @return string|array
-     */
-    public function getFormTheme()
+    public function getFormTheme(): string|array
     {
         return $this->formTheme;
     }
 
-    /**
-     * Setter for formTheme
-     *
-     * @param string|array $formTheme
-     * @return self
-     */
-    public function setFormTheme($formTheme)
+    public function setFormTheme(string|array $formTheme): self
     {
         $this->formTheme = $formTheme;
         return $this;
     }
 
-    /**
-     * Getter for formOptions
-     *
-     * @return array
-     */
-    public function getFormOptions()
+    public function getFormOptions(): array
     {
         return $this->formOptions;
     }
 
-    /**
-     * Setter for formOptions
-     *
-     * @param array $formOptions
-     * @return self
-     */
-    public function setFormOptions(array $formOptions)
+    public function setFormOptions(array $formOptions): self
     {
         $this->formOptions = $formOptions;
         return $this;
     }
 
-    /**
-     * Getter for defaultSortField
-     *
-     * @return string
-     */
-    public function getDefaultSortField()
+    public function getDefaultSortField(): string
     {
         return $this->defaultSortField;
     }
 
-    /**
-     * Setter for defaultSortField
-     *
-     * @param string $defaultSortField
-     * @return self
-     */
-    public function setDefaultSortField($defaultSortField)
+    public function setDefaultSortField(string $defaultSortField): self
     {
         $this->defaultSortField = $defaultSortField;
         return $this;
     }
 
-    /**
-     * Getter for defaultSortOrder
-     *
-     * @return string
-     */
-    public function getDefaultSortOrder()
+    public function getDefaultSortOrder(): string
     {
         return $this->defaultSortOrder;
     }
 
-    /**
-     * Setter for defaultSortOrder
-     *
-     * @param string $defaultSortOrder
-     * @return self
-     */
-    public function setDefaultSortOrder($defaultSortOrder)
+    public function setDefaultSortOrder(string $defaultSortOrder): self
     {
         $this->defaultSortOrder = $defaultSortOrder;
         return $this;
     }
 
-    /**
-     * Get translationDomain
-     *
-     * @return string
-     */
-    public function getTranslationDomain()
+    public function getTranslationDomain(): string
     {
         return $this->translationDomain;
     }
 
-    /**
-     * Set translationDomain
-     *
-     * @param string $translationDomain
-     * @return self
-     */
-    public function setTranslationDomain($translationDomain)
+    public function setTranslationDomain(string $translationDomain): self
     {
         $this->translationDomain = $translationDomain;
         return $this;
     }
 
-    /**
-     * Get templateVariables
-     *
-     * @return array
-     */
-    public function getTemplateVariables()
+    public function getTemplateVariables(): array
     {
         return $this->templateVariables;
     }
 
-    /**
-     * Set templateVariables
-     *
-     * @param array $templateVariables
-     * @return self
-     */
-    public function setTemplateVariables(array $templateVariables = [])
+    public function setTemplateVariables(array $templateVariables = []): self
     {
         $this->templateVariables = $templateVariables;
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getResultsPerPage()
     {
         return $this->resultsPerPage;
     }
 
-    /**
-     * @param int $resultsPerPage
-     *
-     * @return self
-     */
     public function setResultsPerPage($resultsPerPage)
     {
         $this->resultsPerPage = $resultsPerPage;
         return $this;
     }
 
-    /**
-     * Get dispatcher
-     *
-     * @return EventDispatcherInterface
-     */
-    public function getEventDispatcher()
+    public function getEventDispatcher(): EventDispatcherInterface
     {
         return $this->dispatcher;
     }
 
-    /**
-     * Add an event listener
-     *
-     * @param string $eventName
-     * @param callable $listener
-     * @param int $priority
-     * @return self
-     */
-    public function addEventListener($eventName, $listener, $priority = 0)
+    public function addEventListener(string $eventName, callable $listener, int $priority = 0): self
     {
         $this->dispatcher->addListener($eventName, $listener, $priority);
         return $this;
     }
 
-    /**
-     * Add an event subscriber
-     *
-     * @param EventSubscriberInterface $subscriber
-     * @return self
-     */
-    public function addEventSubscriber(EventSubscriberInterface $subscriber)
+    public function addEventSubscriber(EventSubscriberInterface $subscriber): self
     {
         $this->dispatcher->addSubscriber($subscriber);
         return $this;
@@ -500,27 +253,21 @@ class Configuration
 
     /**
      * Validate the configuration
-     *
-     * @return void
      */
-    public function validate()
+    public function validate(): void
     {
         if (!$this->entityClass) {
             throw new \RuntimeException('You must set the entityClass on the CRUD configuration');
         }
 
         if (!$this->name) {
-            throw new \RuntimeException('Default name could not be found. You must set the name on the CRUD configuration');
+            throw new \RuntimeException(
+                'Default name could not be found. You must set the name on the CRUD configuration'
+            );
         }
     }
 
-    /**
-     * Get the default controller name
-     *
-     * @param Request $request
-     * @return string
-     */
-    private function getDefaultName(Request $request)
+    private function getDefaultName(Request $request): ?string
     {
         if (!preg_match('/Controller\\\\([\w\\\\]+)Controller:/', $request->attributes->get('_controller'), $match)) {
             return null;
@@ -529,13 +276,7 @@ class Configuration
         return strtolower(str_replace('\\', '_', $match[1]));
     }
 
-    /**
-     * Get the default controller action
-     *
-     * @param Request $request
-     * @return string
-     */
-    private function getDefaultAction(Request $request)
+    private function getDefaultAction(Request $request): string
     {
         if (!preg_match('/::(\w+)$/', $request->attributes->get('_controller'), $match)) {
             throw new \RuntimeException('Unable to determine controller name');
@@ -544,13 +285,7 @@ class Configuration
         return strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', preg_replace('/Action$/', '', $match[1])));
     }
 
-    /**
-     * Get the default route prefix
-     *
-     * @param Request $request
-     * @return string
-     */
-    private function getDefaultRoutePrefix(Request $request)
+    private function getDefaultRoutePrefix(Request $request): string
     {
         return preg_replace('/[[:alnum:]]+$/', '', $request->attributes->get('_route'));
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Prezent\CrudBundle\Templating;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,14 +20,9 @@ use Doctrine\Common\Util\ClassUtils;
 class TemplateGuesser
 {
     /**
-     * @var KernelInterface
-     */
-    protected $kernel;
-
-    /**
      * @var string[]
      */
-    private $controllerPatterns;
+    private array $controllerPatterns;
 
     /**
      * Constructor.
@@ -33,11 +30,12 @@ class TemplateGuesser
      * @param KernelInterface $kernel             A KernelInterface instance
      * @param string[]        $controllerPatterns Regexps extracting the controller name from its FQN.
      */
-    public function __construct(KernelInterface $kernel, array $controllerPatterns = [])
-    {
+    public function __construct(
+        private readonly KernelInterface $kernel,
+        array $controllerPatterns = []
+    ) {
         $controllerPatterns[] = '/Controller\\\(.+)Controller$/';
 
-        $this->kernel = $kernel;
         $this->controllerPatterns = $controllerPatterns;
     }
 
@@ -52,7 +50,7 @@ class TemplateGuesser
      *
      * @throws \InvalidArgumentException
      */
-    public function guessTemplateNames($controller, Request $request)
+    public function guessTemplateNames(callable $controller, Request $request): array
     {
         if (is_object($controller) && method_exists($controller, '__invoke')) {
             $controller = [$controller, '__invoke'];
@@ -88,19 +86,15 @@ class TemplateGuesser
      *
      * @param callable $controller An array storing the controller classname and action method
      * @param Request  $request    A Request instance
-     * @param string   $engine
-     *
-     * @return TemplateReference|null template reference
      *
      * @throws \InvalidArgumentException
      */
-    private function guessTemplateName($controller, Request $request)
+    private function guessTemplateName(callable $controller, Request $request): ?string
     {
         $matchController = null;
 
         foreach ($this->controllerPatterns as $pattern) {
             if (preg_match($pattern, $controller[0], $tempMatch)) {
-                $matchController = $tempMatch;
                 $matchController = str_replace('\\', '/', strtolower(preg_replace('/([a-z\d])([A-Z])/', '\\1_\\2', $tempMatch[1])));
                 break;
             }
@@ -128,9 +122,9 @@ class TemplateGuesser
      *
      * @param string $class A fully qualified controller class name
      *
-     * @return BundleInterface|null $bundle A Bundle instance
+     * @return string|null $bundle A Bundle instance
      */
-    private function getBundleForClass($class)
+    private function getBundleForClass(string $class): ?string
     {
         $reflectionClass = new \ReflectionClass($class);
         $bundles = $this->kernel->getBundles();

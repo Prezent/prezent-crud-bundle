@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Prezent\CrudBundle\Event;
 
 use Prezent\CrudBundle\Model\Configuration;
@@ -13,21 +15,12 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class PreSubmitEvent extends CrudEvent
 {
-    /**
-     * @var object
-     */
-    private $object;
+    private object $object;
 
-    /**
-     * @var FormInterface
-     */
-    private $form;
+    private FormInterface $form;
 
     /**
      * Constructor
-     *
-     * @param Configuration $configuration
-     * @param Request $request
      */
     public function __construct(Configuration $configuration, Request $request, $object, ?FormInterface $form = null)
     {
@@ -37,22 +30,12 @@ class PreSubmitEvent extends CrudEvent
         $this->form = $form;
     }
 
-    /**
-     * Get object
-     *
-     * @return object
-     */
-    public function getObject()
+    public function getObject(): object
     {
         return $this->object;
     }
 
-    /**
-     * Get form
-     *
-     * @return ?FormInterface
-     */
-    public function getForm()
+    public function getForm(): ?FormInterface
     {
         return $this->form;
     }

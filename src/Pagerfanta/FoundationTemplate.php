@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Prezent\CrudBundle\Pagerfanta;
 
 use Pagerfanta\View\Template\Template;
@@ -7,12 +9,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FoundationTemplate extends Template
 {
-    private $translator;
-
-    public function __construct(TranslatorInterface $translator)
-    {
+    public function __construct(
+        private readonly TranslatorInterface $translator
+    ) {
         parent::__construct();
-        $this->translator = $translator;
     }
 
     protected function getDefaultOptions(): array

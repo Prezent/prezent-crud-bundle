@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Prezent\CrudBundle\Event;
 
 /**
@@ -9,38 +11,28 @@ namespace Prezent\CrudBundle\Event;
  */
 class PostFlushEvent extends PreFlushEvent
 {
-    /**
-     * @var |Exception
-     */
-    private $exception;
+    private \Exception $exception;
 
     /**
      * Were all changes flushed?
-     *
-     * @return bool
      */
-    public function isFlushed()
+    public function isFlushed(): bool
     {
         return $this->exception === null;
     }
 
     /**
      * Get exception
-     *
-     * @return \Exception
      */
-    public function getException()
+    public function getException(): \Exception
     {
         return $this->exception;
     }
 
     /**
      * Set exception
-     *
-     * @param \Exception $exception
-     * @return self
      */
-    public function setException($exception)
+    public function setException(\Exception $exception): self
     {
         $this->exception = $exception;
         return $this;
