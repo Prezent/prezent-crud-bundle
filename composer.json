@@ -10,7 +10,7 @@
         "pagerfanta/core": "^3.1",
         "pagerfanta/doctrine-orm-adapter": "^3.1",
         "pagerfanta/twig": "^4.0",
-        "prezent/grid-bundle": "^0.8.0",
+        "prezent/grid-bundle": "dev-symfony7-upgrade",
         "symfony/form": "^7.0",
         "symfony/framework-bundle": "^7.0",
         "symfony/validator": "^7.0"
