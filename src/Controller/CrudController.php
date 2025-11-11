@@ -20,11 +20,13 @@ use Prezent\CrudBundle\Templating\TemplateGuesser;
 use Prezent\Grid\Grid;
 use Prezent\Grid\GridFactory;
 use Psr\Log\LoggerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Twig\Environment;
 
 /**
  * Base crud controller
@@ -38,7 +40,7 @@ abstract class CrudController extends AbstractController
     public function __construct(
         private readonly ManagerRegistry $doctrine,
         private readonly TemplateGuesser $templateGuesser,
-        private readonly TwigInterface $twig
+        private readonly Environment $twig
     ) {
     }
 

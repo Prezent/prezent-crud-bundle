@@ -16,7 +16,7 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class CrudEvent extends Event
 {
-    private Response $response;
+    private ?Response $response = null;
 
     public function __construct(
         private readonly Configuration $configuration,

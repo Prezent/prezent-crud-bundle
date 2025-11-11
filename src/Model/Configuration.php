@@ -28,13 +28,13 @@ class Configuration
 
     private string $gridType;
 
-    private string|array $gridTheme;
+    private mixed $gridTheme = null;
 
     private array $gridOptions = [];
 
     private string $formType;
 
-    private string|array $formTheme;
+    private mixed $formTheme = null;
 
     private array $formOptions = [];
 
@@ -124,12 +124,12 @@ class Configuration
         return $this;
     }
 
-    public function getGridTheme(): string|array
+    public function getGridTheme(): mixed
     {
         return $this->gridTheme;
     }
 
-    public function setGridTheme(string|array $gridTheme): self
+    public function setGridTheme(mixed $gridTheme): self
     {
         $this->gridTheme = $gridTheme;
         return $this;
@@ -157,12 +157,12 @@ class Configuration
         return $this;
     }
 
-    public function getFormTheme(): string|array
+    public function getFormTheme(): mixed
     {
         return $this->formTheme;
     }
 
-    public function setFormTheme(string|array $formTheme): self
+    public function setFormTheme(mixed $formTheme): self
     {
         $this->formTheme = $formTheme;
         return $this;
