@@ -42,7 +42,7 @@ class TemplateGuesser
     /**
      * Guess multiple possible template names based on the controller
      *
-     * @param callable $controller An array storing the controller object and action method
+     * @param array $controller An array storing the controller object and action method
      * @param Request  $request    A Request instance
      * @param string   $engine
      *
@@ -50,7 +50,7 @@ class TemplateGuesser
      *
      * @throws \InvalidArgumentException
      */
-    public function guessTemplateNames(callable $controller, Request $request): array
+    public function guessTemplateNames(array $controller, Request $request): array
     {
         if (is_object($controller) && method_exists($controller, '__invoke')) {
             $controller = [$controller, '__invoke'];
@@ -84,12 +84,12 @@ class TemplateGuesser
      * Guesses and returns the template name to render based on the controller
      * and action names.
      *
-     * @param callable $controller An array storing the controller classname and action method
+     * @param array $controller An array storing the controller classname and action method
      * @param Request  $request    A Request instance
      *
      * @throws \InvalidArgumentException
      */
-    private function guessTemplateName(callable $controller, Request $request): ?string
+    private function guessTemplateName(array $controller, Request $request): ?string
     {
         $matchController = null;
 
