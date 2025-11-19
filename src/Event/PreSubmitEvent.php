@@ -22,8 +22,12 @@ class PreSubmitEvent extends CrudEvent
     /**
      * Constructor
      */
-    public function __construct(Configuration $configuration, Request $request, ?object $object = null, ?FormInterface $form = null)
-    {
+    public function __construct(
+        Configuration $configuration,
+        Request $request,
+        ?object $object = null,
+        ?FormInterface $form = null
+    ) {
         parent::__construct($configuration, $request);
 
         $this->object = $object;

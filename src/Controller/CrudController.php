@@ -75,10 +75,9 @@ abstract class CrudController extends AbstractController
         $this->configureListCriteria($request, $queryBuilder);
 
         $pager = new Pagerfanta(new QueryAdapter($queryBuilder));
-        $pager->setMaxPerPage($request->get('resultsPerPage', $configuration->getResultsPerPage()));
-        $pager->setCurrentPage($request->get('page', 1));
+        $pager->setMaxPerPage((int) $request->get('resultsPerPage', $configuration->getResultsPerPage()));
+        $pager->setCurrentPage((int) $request->get('page', 1));
 
-        /** @var Grid $grid */
         $grid = $gridFactory->createGrid(
             $configuration->getGridType(),
             $configuration->getGridOptions()
