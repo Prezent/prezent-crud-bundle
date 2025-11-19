@@ -15,14 +15,14 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class PreSubmitEvent extends CrudEvent
 {
-    private object $object;
+    private ?object $object;
 
-    private FormInterface $form;
+    private ?FormInterface $form;
 
     /**
      * Constructor
      */
-    public function __construct(Configuration $configuration, Request $request, $object, ?FormInterface $form = null)
+    public function __construct(Configuration $configuration, Request $request, ?object $object = null, ?FormInterface $form = null)
     {
         parent::__construct($configuration, $request);
 
