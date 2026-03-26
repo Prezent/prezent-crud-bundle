@@ -11,7 +11,7 @@ namespace Prezent\CrudBundle\Event;
  */
 class PostFlushEvent extends PreFlushEvent
 {
-    private \Exception $exception;
+    private ?\Exception $exception = null;
 
     /**
      * Were all changes flushed?
